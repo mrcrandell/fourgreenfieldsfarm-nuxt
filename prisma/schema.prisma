@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String
+  startsAt        DateTime @db.Timestamptz()
+  endsAt          DateTime @db.Timestamptz()
+  description     String?  @db.Text
+  isFeatured      Boolean  @default(false)
+  isHasEndsAt     Boolean  @default(false)
+  isAllDay        Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  hauntedBy       String?
+  recurringEventId String?
+  recurrenceRule  String?
+  createdAt       DateTime @default(now()) @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @db.Timestamptz()
+
+  // Optional: Add relation to self for recurring events
+  recurringEvent  Event?   @relation("RecurringEvents", fields: [recurringEventId], references: [id])
+  recurrences     Event[]  @relation("RecurringEvents")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  email         String    @unique
+  password      String
+  rememberToken String?
+  createdAt     DateTime  @default(now()) @db.Timestamptz()
+  updatedAt     DateTime  @updatedAt @db.Timestamptz()
+}
