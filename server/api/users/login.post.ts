@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
-
-const prisma = new PrismaClient();
+import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Get request body
@@ -69,7 +67,5 @@ export default defineEventHandler(async (event) => {
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",
     });
-  } finally {
-    await prisma.$disconnect();
   }
 });

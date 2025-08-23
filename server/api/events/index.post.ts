@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import { RRule } from "rrule";
 // import { v4 as uuidv4 } from "uuid";
 import { verifyAuth } from "../../utils/auth";
-
-const prisma = new PrismaClient();
+import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Verify authentication first
@@ -100,7 +98,5 @@ export default defineEventHandler(async (event) => {
       statusCode,
       message,
     });
-  } finally {
-    await prisma.$disconnect();
   }
 });

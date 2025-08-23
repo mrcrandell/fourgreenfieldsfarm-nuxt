@@ -95,6 +95,5 @@ export default defineEventHandler(async (event) => {
   } finally {
     // Clean up the temporary file
     await fs.unlink(file.filepath).catch(console.error);
-    await prisma.$disconnect();
   }
 });

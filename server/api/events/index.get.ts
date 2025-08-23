@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { parseISO } from "date-fns";
-
-const prisma = new PrismaClient();
+import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -45,7 +43,5 @@ export default defineEventHandler(async (event) => {
       statusCode: error.statusCode || 500,
       message: error.message || "Internal server error",
     });
-  } finally {
-    await prisma.$disconnect();
   }
 });

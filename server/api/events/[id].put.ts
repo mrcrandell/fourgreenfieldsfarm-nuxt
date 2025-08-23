@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { verifyAuth } from "../../utils/auth";
-
-const prisma = new PrismaClient();
+import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Verify authentication first
@@ -85,7 +83,5 @@ export default defineEventHandler(async (event) => {
         message: "Internal server error",
       });
     }
-  } finally {
-    await prisma.$disconnect();
   }
 });
