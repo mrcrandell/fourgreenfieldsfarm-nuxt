@@ -8,7 +8,14 @@ const prismaClientSingleton = () => {
     process.env.DATABASE_URL?.substring(0, 20)
   );
 
-  return new PrismaClient();
+  // Explicitly pass the datasource to ensure it uses the correct URL
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  });
 };
 
 declare const globalThis: {

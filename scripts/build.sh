@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo "Generating Prisma client..."
+npx prisma generate
+
 echo "Running database migrations..."
 # Use the DATABASE_URL as is (it already has the PgBouncer parameters)
 npx prisma migrate deploy
