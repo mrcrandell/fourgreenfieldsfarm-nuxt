@@ -1,10 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { RRule } from "rrule";
 // import { v4 as uuidv4 } from "uuid";
+import { verifyAuth } from "../../utils/auth";
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+  // Verify authentication first
+  const user = await verifyAuth(event);
+
   const body = await readBody(event);
 
   // Basic validation
@@ -36,7 +40,7 @@ export default defineEventHandler(async (event) => {
           endsAt,
         },
       });
-      return event;
+      return { ...event, createdBy: user.email };
     }
 
     // Handle recurring events
@@ -73,7 +77,7 @@ export default defineEventHandler(async (event) => {
     );
 
     // Return all events including the parent
-    return [parentEvent, ...childEvents];
+    return { events: [parentEvent, ...childEvents], createdBy: user.email };
   } catch (error: unknown) {
     console.error("Event creation error:", error);
     let statusCode = 500;

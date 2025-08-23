@@ -1,8 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { verifyAuth } from "../../utils/auth";
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+  // Verify authentication first
+  const user = await verifyAuth(event);
+
   const body = await readBody(event);
   const id = event.context.params?.id;
 
@@ -41,7 +45,7 @@ export default defineEventHandler(async (event) => {
         where: { id },
         data: updateData,
       });
-      return updated;
+      return { ...updated, updatedBy: user.email };
     }
 
     // Update recurring events
@@ -66,7 +70,7 @@ export default defineEventHandler(async (event) => {
       orderBy: { startsAt: "asc" },
     });
 
-    return events;
+    return { events, updatedBy: user.email };
   } catch (error: unknown) {
     console.error("Event update error:", error);
     if (error instanceof Error && "statusCode" in error) {
