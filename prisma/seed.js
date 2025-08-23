@@ -7,7 +7,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Run seed if we have a database URL (indicating deployment or explicit local seeding)
-  if (process.env.DATABASE_URL && (process.env.NODE_ENV === "production" || process.env.FORCE_SEED === "true")) {
+  if (
+    process.env.DATABASE_URL &&
+    (process.env.NODE_ENV === "production" || process.env.FORCE_SEED === "true")
+  ) {
     console.log("Starting database seed...");
     const plainPassword = process.env.DEFAULT_USER_PASSWORD || "changeme";
     const passwordHash = await argon2.hash(plainPassword);
@@ -38,7 +41,9 @@ async function main() {
 
     console.log({ users });
   } else {
-    console.log("Skipping seed - no DATABASE_URL or not in production environment");
+    console.log(
+      "Skipping seed - no DATABASE_URL or not in production environment"
+    );
   }
 }
 
