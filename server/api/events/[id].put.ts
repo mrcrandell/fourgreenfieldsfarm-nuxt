@@ -1,9 +1,9 @@
 import { verifyAuth } from "../../utils/auth";
-import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Verify authentication first
   const user = await verifyAuth(event);
+  const prisma = usePrisma();
 
   const body = await readBody(event);
   const id = event.context.params?.id;
@@ -33,8 +33,9 @@ export default defineEventHandler(async (event) => {
 
     // Prepare update data
     const updateData = { ...body };
-    if (updateData.startsAt)
+    if (updateData.startsAt) {
       updateData.startsAt = new Date(updateData.startsAt);
+    }
     if (updateData.endsAt) updateData.endsAt = new Date(updateData.endsAt);
 
     if (scope === "single" || !existingEvent.recurringEventId) {
@@ -47,15 +48,14 @@ export default defineEventHandler(async (event) => {
     }
 
     // Update recurring events
-    const whereClause =
-      scope === "future"
-        ? {
-            AND: [
-              { recurringEventId: existingEvent.recurringEventId },
-              { startsAt: { gte: existingEvent.startsAt } },
-            ],
-          }
-        : { recurringEventId: existingEvent.recurringEventId };
+    const whereClause = scope === "future"
+      ? {
+        AND: [
+          { recurringEventId: existingEvent.recurringEventId },
+          { startsAt: { gte: existingEvent.startsAt } },
+        ],
+      }
+      : { recurringEventId: existingEvent.recurringEventId };
 
     await prisma.event.updateMany({
       where: whereClause,

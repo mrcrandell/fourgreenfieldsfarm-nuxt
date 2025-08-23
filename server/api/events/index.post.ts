@@ -1,11 +1,11 @@
 import { RRule } from "rrule";
 // import { v4 as uuidv4 } from "uuid";
 import { verifyAuth } from "../../utils/auth";
-import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Verify authentication first
   const user = await verifyAuth(event);
+  const prisma = usePrisma();
 
   const body = await readBody(event);
 
@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
             recurrenceRule: body.recurrenceRule,
           },
         })
-      )
+      ),
     );
 
     // Return all events including the parent

@@ -1,10 +1,10 @@
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
-import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
   // Get request body
   const { email, password } = await readBody(event);
+  const prisma = usePrisma();
 
   // Validate input
   if (!email || !password || password.length < 6) {
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
     // Sign JWT token
     const token = jwt.sign(
       userObj,
-      useRuntimeConfig().jwtSecret || "your_jwt_secret"
+      useRuntimeConfig().jwtSecret || "your_jwt_secret",
     );
 
     // Return user data and token

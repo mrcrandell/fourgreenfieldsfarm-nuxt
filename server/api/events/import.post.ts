@@ -3,12 +3,12 @@ import { Readable } from "stream";
 import formidable from "formidable";
 import { parse } from "date-fns";
 import { promises as fs } from "fs";
-import prisma from "../../../lib/prisma";
 import { verifyAuth } from "../../utils/auth";
 
 export default defineEventHandler(async (event) => {
   // Verify authentication first
   const user = await verifyAuth(event);
+  const prisma = usePrisma();
   // Configure formidable
   const form = formidable({
     multiples: false,
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         if (err) reject(err);
         resolve({ files });
       });
-    }
+    },
   );
 
   const file = files.file?.[0]; // Get the first file from the files object

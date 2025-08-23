@@ -1,8 +1,8 @@
-import { parseISO, format } from "date-fns";
-import prisma from "../../../lib/prisma";
+import { format, parseISO } from "date-fns";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
+  const prisma = usePrisma();
 
   try {
     const queryOptions = {
