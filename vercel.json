@@ -1,8 +1,1 @@
-{
-  "buildCommand": "bash scripts/build.sh",
-  "build": {
-    "env": {
-      "PRISMA_GENERATE_DATAPROXY": "true"
-    }
-  }
-}
+{}
