@@ -1,0 +1,13 @@
+{
+  "buildCommand": "bash scripts/build.sh",
+  "build": {
+    "env": {
+      "PRISMA_GENERATE_DATAPROXY": "true"
+    }
+  },
+  "functions": {
+    "app/server/index.mjs": {
+      "maxDuration": 30
+    }
+  }
+}

@@ -10,7 +10,10 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && npx prisma generate && node prisma/seed.js"
+    "postinstall": "nuxt prepare && npx prisma generate",
+    "db:deploy": "npx prisma migrate deploy && npx prisma db seed",
+    "db:migrate": "npx prisma migrate deploy",
+    "db:seed": "npx prisma db seed"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.9.0",
