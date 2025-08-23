@@ -2,7 +2,7 @@
 set -e
 
 echo "Running database migrations..."
-# Use the regular DATABASE_URL (pooled) for migrations
+# Use the DATABASE_URL as is (it already has the PgBouncer parameters)
 npx prisma migrate deploy
 
 # Only seed if explicitly requested
