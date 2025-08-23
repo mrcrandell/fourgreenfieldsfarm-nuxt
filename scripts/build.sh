@@ -2,6 +2,7 @@
 set -e
 
 echo "Running database migrations..."
+# Use the regular DATABASE_URL (pooled) for migrations
 npx prisma migrate deploy
 
 # Only seed if explicitly requested
