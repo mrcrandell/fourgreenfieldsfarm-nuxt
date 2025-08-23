@@ -4,8 +4,13 @@ set -e
 echo "Running database migrations..."
 npx prisma migrate deploy
 
-echo "Seeding database..."
-NODE_ENV=production npx prisma db seed
+# Only seed if explicitly requested
+if [ "$FORCE_SEED" = "true" ]; then
+  echo "Seeding database..."
+  NODE_ENV=production npx prisma db seed
+else
+  echo "Skipping database seed (set FORCE_SEED=true to enable)"
+fi
 
 echo "Building application..."
-npm run build
+npm run build:nuxt
