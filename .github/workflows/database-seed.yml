@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  migrate:
+  seed:
     runs-on: ubuntu-latest
 
     steps:
