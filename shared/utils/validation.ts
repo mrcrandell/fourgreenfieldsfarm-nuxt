@@ -1,5 +1,27 @@
 import Joi from "joi";
 
+export const loginValidationSchema = Joi.object().keys({
+  email: Joi.string()
+    .trim()
+    .email({ tlds: { allow: false } })
+    .required()
+    .messages({
+      "string.email": "Please enter a valid email.",
+      "string.empty": "Please enter your email.",
+      "any.required": "Please enter your email.",
+    }),
+  password: Joi.string()
+    .trim()
+    .min(6)
+    .required()
+    .messages({
+      "string.min": "Password must be at least 6 characters.",
+      "string.empty": "Please enter your password.",
+      "any.required": "Please enter your password.",
+    }),
+  token: Joi.string().trim().required(),
+});
+
 export const contactValidationSchema = Joi.object().keys({
   name: Joi.string().trim().required().messages({
     "string.empty": "Please enter your name.",

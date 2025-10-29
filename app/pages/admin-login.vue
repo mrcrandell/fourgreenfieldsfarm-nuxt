@@ -1,0 +1,281 @@
+<script setup>
+import { useAuthStore } from "~/stores/auth";
+
+const router = useRouter();
+const authStore = useAuthStore();
+
+const alert = ref({
+  show: false,
+  status: "",
+  message: "",
+});
+
+const email = ref("");
+const password = ref("");
+const token = ref(null);
+const turnstileRef = ref(null);
+const isLoading = ref(false);
+const errorsRaw = ref([]);
+
+const errors = computed(() => {
+  const errors = {};
+  errorsRaw.value.forEach((error) => {
+    const [field] = error.path;
+    errors[field] = error.message;
+  });
+  return errors;
+});
+
+const submitText = computed(() => {
+  return isLoading.value ? "Logging in..." : "Login";
+});
+
+async function submitForm() {
+  errorsRaw.value = [];
+  isLoading.value = true;
+  alert.value.show = false;
+
+  const formData = {
+    email: email.value,
+    password: password.value,
+    token: token.value,
+  };
+
+  const { error } = loginValidationSchema.validate(formData, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    isLoading.value = false;
+    alert.value = {
+      show: true,
+      status: "danger",
+      message: "Please correct the errors in red on the form.",
+    };
+    errorsRaw.value = error.details;
+    return;
+  }
+
+  try {
+    const data = await $fetch("/api/users/login", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (data.token) {
+      authStore.login(
+        {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+        },
+        data.token
+      );
+
+      router.push("/admin");
+    }
+  } catch (error) {
+    console.log(error);
+    alert.value = {
+      show: true,
+      status: "danger",
+      message: error?.data?.message || "Invalid email or password.",
+    };
+    errorsRaw.value = Array.isArray(error?.data)
+      ? error?.data
+      : [{ path: ["form"], message: error?.data?.message || "Login failed" }];
+  } finally {
+    isLoading.value = false;
+    turnstileRef.value?.reset();
+  }
+}
+</script>
+
+<template>
+  <div class="login-form">
+    <h1>Admin Login</h1>
+
+    <form method="post" @submit.prevent="submitForm($event)">
+      <div
+        v-if="alert.show"
+        class="alert"
+        role="alert"
+        :class="'alert-' + alert.status"
+      >
+        {{ alert.message }}
+      </div>
+
+      <div class="form-group">
+        <label for="login-email">Email</label>
+        <input
+          id="login-email"
+          v-model="email"
+          type="email"
+          class="form-control"
+          name="email"
+          :class="{ 'is-invalid': errors.email }"
+          placeholder="Email"
+          autocomplete="username"
+        />
+        <div v-if="errors.email" class="invalid-feedback">
+          {{ errors.email }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input
+          id="login-password"
+          v-model="password"
+          type="password"
+          class="form-control"
+          name="password"
+          :class="{ 'is-invalid': errors.password }"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <div v-if="errors.password" class="invalid-feedback">
+          {{ errors.password }}
+        </div>
+      </div>
+
+      <NuxtTurnstile ref="turnstileRef" v-model="token" />
+
+      <div class="form-group form-group-submit">
+        <button
+          type="submit"
+          class="btn btn-submit btn-primary"
+          :disabled="isLoading"
+        >
+          <transition name="slide-fade" mode="out-in">
+            <span :key="submitText">{{ submitText }}</span>
+          </transition>
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<style scoped>
+.login-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group-submit {
+  margin-top: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #647b97;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(100, 123, 151, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #e74c3c;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #e74c3c;
+}
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #647b97;
+  border-color: #647b97;
+}
+
+.btn-primary:hover:not(:disabled) {
+  color: #fff;
+  background-color: #5a6d87;
+  border-color: #5a6d87;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-submit {
+  min-width: 120px;
+}
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+</style>

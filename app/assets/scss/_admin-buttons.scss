@@ -1,0 +1,43 @@
+// Admin layout button styles
+@use "_variables.scss" as *;
+@use "_functions.scss" as *;
+
+.admin-layout .btn {
+  // font-family: $font-family-sans-serif;
+}
+
+.btn-admin-primary {
+  background-color: $chicory-flower;
+  color: $white;
+
+  &:hover {
+    background-color: shade-color($chicory-flower, 15%);
+  }
+}
+
+.btn-admin-danger {
+  background-color: $danger;
+  color: $white;
+
+  &:hover {
+    background-color: shade-color($danger, 15%);
+  }
+}
+
+.btn-admin-success {
+  background-color: $success;
+  color: $white;
+
+  &:hover {
+    background-color: shade-color($success, 15%);
+  }
+}
+
+.btn-admin-warning {
+  background-color: $supernova;
+  color: $black;
+
+  &:hover {
+    background-color: shade-color($supernova, 15%);
+  }
+}

@@ -1,0 +1,203 @@
+// Default layout button styles
+@use "sass:color";
+@use "sass:list";
+@use "_variables.scss" as *;
+@use "_functions.scss" as *;
+@use "_mixins.scss" as *;
+
+// Buttons
+.btn {
+  --btn-padding-x: #{$input-btn-padding-x};
+  --btn-padding-y: #{$input-btn-padding-y};
+  --btn-font-family: #{$font-family-base};
+  @include rfs($input-btn-font-size, --btn-font-size);
+  --btn-font-weight: #{$font-weight-base};
+  --btn-line-height: #{$input-btn-line-height};
+  --btn-color: #{$body-color};
+  --btn-bg: transparent;
+  --btn-border-width: #{$input-btn-border-width};
+  --btn-border-color: transparent;
+  --btn-border-radius: #{$btn-border-radius};
+  --btn-hover-border-color: transparent;
+  --btn-box-shadow: #{$btn-box-shadow};
+  --btn-disabled-opacity: #{$btn-disabled-opacity};
+  --btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--btn-focus-shadow-rgb), 0.5);
+  // scss-docs-end btn-css-vars
+
+  display: inline-block;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-family: var(--btn-font-family);
+  @include font-size(var(--btn-font-size));
+  font-weight: var(--btn-font-weight);
+  line-height: var(--btn-line-height);
+  color: var(--btn-color);
+  text-align: center;
+  text-decoration: if($link-decoration == none, null, none);
+  // white-space: $btn-white-space;
+  vertical-align: middle;
+  cursor: if($enable-button-pointers, pointer, null);
+  user-select: none;
+  border: var(--btn-border-width) solid var(--btn-border-color);
+  /* @include button-size(
+    $input-btn-padding-y,
+    $input-btn-padding-x,
+    $input-btn-font-size,
+    $border-radius
+  ); */
+  border-radius: var(--btn-border-radius);
+  @include transition(
+    color 0.25s ease-in-out,
+    background-color 0.25s ease-in-out,
+    border-color 0.25s ease-in-out,
+    box-shadow 0.25s ease-in-out
+  );
+
+  @include hover() {
+    color: $body-color;
+    text-decoration: none;
+  }
+
+  &:focus,
+  &.focus {
+    outline: 0;
+    box-shadow: $btn-focus-box-shadow;
+  }
+
+  // Disabled comes first so active can properly restyle
+  &.disabled,
+  &:disabled {
+    opacity: $btn-disabled-opacity;
+  }
+}
+.btn-primary {
+  --btn-border-color: var(--btn-primary-border-color);
+  background-color: var(--primary);
+  color: #fff;
+  &:hover,
+  &:focus {
+    background-color: var(--btn-primary-hover-bg, shade-color($camarone, 15%));
+    border-color: var(
+      --btn-primary-hover-border-color,
+      shade-color($holly, 15%)
+    );
+    color: #fff;
+  }
+}
+.btn-outline-primary {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+  &:hover,
+  &:focus {
+    background-color: var(--primary);
+    color: #fff;
+  }
+}
+.btn-secondary {
+  background-color: var(--secondary);
+  border-color: var(
+    --btn-secondary-border-color,
+    color.adjust($secondary, $lightness: -15%)
+  );
+  color: #fff;
+  //@include shadow-1();
+  &:hover,
+  &:focus {
+    background-color: var(
+      --btn-secondary-hover-bg,
+      color.adjust($secondary, $lightness: -15%)
+    );
+    border-color: var(
+      --btn-secondary-hover-border-color,
+      shade-color(color.adjust($secondary, $lightness: -15%), 15%)
+    );
+    color: #fff;
+  }
+}
+.btn-tertiary {
+  background-color: $chicory-flower;
+  border-color: color.adjust($chicory-flower, $lightness: -15%);
+  color: #fff;
+  &:hover,
+  &:focus {
+    background-color: $balihai;
+    border-color: shade-color(color.adjust($balihai, $lightness: -15%), 15%);
+    color: #fff;
+  }
+}
+.btn-success {
+  background-color: var(--success);
+  border-color: var(
+    --btn-success-border-color,
+    color.adjust($success, $lightness: -15%)
+  );
+  color: #fff;
+  &:hover,
+  &:focus {
+    background-color: var(
+      --btn-success-hover-bg,
+      color.adjust($success, $lightness: -15%)
+    );
+    border-color: var(
+      --btn-success-hover-border-color,
+      shade-color(color.adjust($success, $lightness: -15%), 15%)
+    );
+    color: #fff;
+  }
+}
+.btn-warning {
+  background-color: var(--warning);
+  border-color: var(
+    --btn-warning-border-color,
+    color.adjust($warning, $lightness: -15%)
+  );
+  color: #fff;
+  &:hover,
+  &:focus {
+    background-color: var(
+      --btn-warning-hover-bg,
+      color.adjust($warning, $lightness: -15%)
+    );
+    border-color: var(
+      --btn-warning-hover-border-color,
+      shade-color(color.adjust($warning, $lightness: -15%), 15%)
+    );
+    color: #fff;
+  }
+}
+.btn-danger {
+  background-color: var(--danger);
+  border-color: var(
+    --btn-danger-border-color,
+    color.adjust($danger, $lightness: -15%)
+  );
+  color: #fff;
+  &:hover,
+  &:focus {
+    background-color: var(
+      --btn-danger-hover-bg,
+      color.adjust($danger, $lightness: -15%)
+    );
+    border-color: var(
+      --btn-danger-hover-border-color,
+      shade-color(color.adjust($danger, $lightness: -15%), 15%)
+    );
+    color: #fff;
+  }
+}
+.btn-lg {
+  @include button-size(
+    $input-btn-padding-y-lg,
+    $input-btn-padding-x-lg,
+    $font-size-lg,
+    $border-radius-lg
+  );
+}
+.btn-sm {
+  @include button-size(
+    $input-btn-padding-y-sm,
+    $input-btn-padding-x-sm,
+    $font-size-sm,
+    $border-radius-lg
+  );
+}

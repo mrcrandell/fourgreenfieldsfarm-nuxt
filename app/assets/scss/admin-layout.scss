@@ -1,0 +1,45 @@
+// Admin layout styles
+@use "sass:meta";
+@use "_variables.scss" as *;
+@use "_functions.scss" as *;
+@use "_admin-buttons.scss" as *;
+
+.admin-layout {
+  --primary: #{$chicory-flower};
+  --btn-primary-border-color: #{$rainmaker};
+  --btn-primary-hover-border-color: #{shade-color($rainmaker, 15%)};
+  --btn-primary-hover-bg: #{shade-color($chicory-flower, 15%)};
+  --secondary: #{$rainmaker};
+  --headings-font-family: #{meta.inspect($font-family-sans-serif)};
+  --h1-color: #{$rainmaker};
+  --h2-color: #{$rainmaker};
+  min-height: 100vh;
+  background-color: $gray-200;
+
+  .pagination {
+    --pagination-active-bg: #{$rainmaker};
+    --pagination-active-border-color: #{$rainmaker};
+  }
+
+  h1,
+  h2,
+  h3 {
+    // font-family: $font-family-sans-serif;
+  }
+}
+
+.admin-header {
+  background-color: $rainmaker;
+  color: $white;
+  padding: rem(16);
+
+  h1 {
+    margin: 0;
+    font-size: rem(24);
+    color: $white;
+  }
+}
+
+.admin-content {
+  padding: rem(24);
+}

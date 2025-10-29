@@ -31,9 +31,7 @@
     "vueuse"
   ],
   "css.validate": false,
-  "deno.enablePaths": [
-    "supabase/functions"
-  ],
+  "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",
@@ -87,13 +85,9 @@
   "json.format.enable": true,
   "scss.validate": false,
   "stylelint.enable": true,
-  "stylelint.validate": [
-    "css",
-    "less",
-    "postcss",
-    "scss",
-    "vue",
-    "sass"
-  ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

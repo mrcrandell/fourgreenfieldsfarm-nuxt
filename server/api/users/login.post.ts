@@ -1,10 +1,40 @@
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 
+async function validateToken(ip: string, token: string, secret: string) {
+  const formData = new FormData();
+  formData.append("secret", secret);
+  formData.append("response", token);
+  formData.append("remoteip", ip);
+
+  const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+  const result = await fetch(url, {
+    body: formData,
+    method: "POST",
+  });
+
+  const outcome = await result.json();
+  return outcome.success;
+}
+
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig();
   // Get request body
-  const { email, password } = await readBody(event);
+  const { email, password, token } = await readBody(event);
   const prisma = usePrisma();
+
+  // Validate Turnstile token
+  let ip = event.node.req.headers["cf-connecting-ip"] || "";
+  if (Array.isArray(ip)) {
+    ip = ip[0];
+  }
+
+  if (!(await validateToken(ip, token, config.nuxtTurnstileSecretKey))) {
+    throw createError({
+      statusCode: 400,
+      message: "Invalid security token",
+    });
+  }
 
   // Validate input
   if (!email || !password || password.length < 6) {
