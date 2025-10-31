@@ -28,6 +28,17 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // Remove items from body
+  delete body.startDate;
+  delete body.startTime;
+  delete body.endTime;
+  delete body.isRecurring;
+  delete body.recurringFrequency;
+  delete body.recurringInterval;
+  delete body.recurringCount;
+  delete body.recurringEndDate;
+  delete body.scope;
+
   try {
     if (!body.recurrenceRule) {
       // Create single event

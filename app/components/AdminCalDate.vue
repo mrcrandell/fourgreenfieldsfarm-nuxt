@@ -19,9 +19,14 @@ const isToday = computed(() => {
       {{ format(day.date, "d") }}
     </header>
     <div class="day-events">
-      <div v-for="event in day.events" :key="event.id" class="event-item">
+      <router-link
+        v-for="event in day.events"
+        :key="event.id"
+        :to="`/admin/events/${event.id}`"
+        class="event-item"
+      >
         {{ event.name }}
-      </div>
+      </router-link>
     </div>
   </div>
 </template>

@@ -1,3 +1,11 @@
+<script setup>
+// Use the admin layout for this page
+definePageMeta({
+  layout: "admin",
+  middleware: "auth",
+});
+</script>
+
 <template>
   <div>
     <h1>Admin Dashboard</h1>
@@ -14,14 +22,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-// Use the admin layout for this page
-definePageMeta({
-  layout: "admin",
-  middleware: "auth",
-});
-</script>
 
 <style lang="scss" scoped>
 .button-examples {

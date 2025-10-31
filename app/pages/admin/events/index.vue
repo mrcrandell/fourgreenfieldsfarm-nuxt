@@ -165,6 +165,10 @@ onMounted(() => {
     <header class="page-header">
       <h1>Event Management</h1>
     </header>
+
+    <routerLink class="btn btn-primary" to="/admin/events/add"
+      >Add New Event</routerLink
+    >
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <button class="nav-link active" @click="view = 'month'">Month</button>
@@ -219,9 +223,6 @@ onMounted(() => {
               Show Past Events
             </label>
           </div>
-          <button class="btn btn-primary" @click="addEvent">
-            Add New Event
-          </button>
         </div>
       </div>
       <div class="table-responsive">
