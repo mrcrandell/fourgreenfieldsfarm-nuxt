@@ -5,8 +5,9 @@ export default defineEventHandler(async (event) => {
   const user = await verifyAuth(event);
   const prisma = usePrisma();
 
-  const body = await readBody(event);
   const id = event.context.params?.id;
+  const query = getQuery(event);
+  const scope = (query.scope as string) ?? "single";
 
   if (!id) {
     throw createError({
@@ -28,38 +29,19 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const scope = body.scope ?? "single";
-
-    // Prepare update data - only include schema fields
-    const updateData: any = {
-      name: body.name,
-      slug: body.slug,
-      description: body.description || null,
-      hauntedBy: body.hauntedBy || null,
-      isAllDay: body.isAllDay,
-      isHasEndsAt: body.isHasEndsAt,
-      isFeatured: body.isFeatured,
-      isActive: body.isActive,
-      recurrenceRule: body.recurrenceRule || null,
-    };
-
-    if (body.startsAt) {
-      updateData.startsAt = new Date(body.startsAt);
-    }
-    if (body.endsAt) {
-      updateData.endsAt = new Date(body.endsAt);
-    }
-
     if (scope === "single" || !existingEvent.recurringEventId) {
-      // Update single event
-      const updated = await prisma.event.update({
+      // Delete single event
+      await prisma.event.delete({
         where: { id },
-        data: updateData,
       });
-      return { ...updated, updatedBy: user.email };
+      return {
+        success: true,
+        message: "Event deleted successfully",
+        deletedBy: user.email,
+      };
     }
 
-    // Update recurring events
+    // Delete recurring events based on scope
     const whereClause = scope === "future"
       ? {
         AND: [
@@ -69,20 +51,24 @@ export default defineEventHandler(async (event) => {
       }
       : { recurringEventId: existingEvent.recurringEventId };
 
-    await prisma.event.updateMany({
+    // Get count of events to be deleted
+    const countToDelete = await prisma.event.count({
       where: whereClause,
-      data: updateData,
     });
 
-    // Return updated events
-    const events = await prisma.event.findMany({
+    // Delete the events
+    await prisma.event.deleteMany({
       where: whereClause,
-      orderBy: { startsAt: "asc" },
     });
 
-    return { events, updatedBy: user.email };
+    return {
+      success: true,
+      message: `${countToDelete} event(s) deleted successfully`,
+      deletedBy: user.email,
+      count: countToDelete,
+    };
   } catch (error: unknown) {
-    console.error("Event update error:", error);
+    console.error("Event deletion error:", error);
     if (error instanceof Error && "statusCode" in error) {
       const errWithStatus = error as Error & { statusCode?: number };
       throw createError({

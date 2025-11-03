@@ -18,7 +18,7 @@ export const eventValidationSchema = Joi.object({
   endTime: Joi.string().optional(),
   endsAt: Joi.date().min(Joi.ref("startsAt")).required().messages({
     "date.base": "End date is required",
-    "date.min": "End date must be after start date",
+    "date.min": "End date must be after or equal to start date",
     "any.required": "End date is required",
   }),
   description: Joi.string().allow("").optional(),
@@ -36,6 +36,7 @@ export const eventValidationSchema = Joi.object({
     }),
     otherwise: Joi.string().allow("").optional(),
   }),
+  recurrenceEnds: Joi.string().valid("NEVER", "COUNT", "UNTIL").optional(),
   recurringFrequency: Joi.string().valid("DAILY", "WEEKLY", "MONTHLY", "YEARLY")
     .when("isRecurring", {
       is: true,

@@ -21,33 +21,33 @@ export default defineEventHandler(async (event) => {
   const startsAt = new Date(body.startsAt);
   const endsAt = new Date(body.endsAt);
 
-  if (endsAt <= startsAt) {
+  if (endsAt < startsAt) {
     throw createError({
       statusCode: 400,
-      message: "endsAt must be after startsAt",
+      message: "endsAt must be after or equal to startsAt",
     });
   }
 
-  // Remove items from body
-  delete body.startDate;
-  delete body.startTime;
-  delete body.endTime;
-  delete body.isRecurring;
-  delete body.recurringFrequency;
-  delete body.recurringInterval;
-  delete body.recurringCount;
-  delete body.recurringEndDate;
-  delete body.scope;
+  // Prepare data for database - only include schema fields
+  const eventData = {
+    name: body.name,
+    slug: body.slug,
+    startsAt,
+    endsAt,
+    description: body.description || null,
+    hauntedBy: body.hauntedBy || null,
+    isAllDay: body.isAllDay ?? false,
+    isHasEndsAt: body.isHasEndsAt ?? false,
+    isFeatured: body.isFeatured ?? false,
+    isActive: body.isActive ?? true,
+    recurrenceRule: body.recurrenceRule || null,
+  };
 
   try {
     if (!body.recurrenceRule) {
       // Create single event
       const event = await prisma.event.create({
-        data: {
-          ...body,
-          startsAt,
-          endsAt,
-        },
+        data: eventData,
       });
       return { ...event, createdBy: user.email };
     }
@@ -57,29 +57,47 @@ export default defineEventHandler(async (event) => {
     const repeatDates = rule.all();
     const duration = endsAt.getTime() - startsAt.getTime();
 
-    // Create the parent event first
+    // Add debugging
+    console.log("RRule string:", body.recurrenceRule);
+    console.log("Generated dates:", repeatDates.length, repeatDates);
+
+    if (repeatDates.length === 0) {
+      throw createError({
+        statusCode: 400,
+        message: "Invalid recurrence rule - no dates generated",
+      });
+    }
+
+    if (repeatDates.length === 1) {
+      // Only one occurrence, create as single event
+      const event = await prisma.event.create({
+        data: {
+          ...eventData,
+          startsAt: repeatDates[0],
+          endsAt: new Date(repeatDates[0].getTime() + duration),
+        },
+      });
+      return { ...event, createdBy: user.email };
+    }
+
+    // Multiple occurrences - create parent with first date and children with remaining dates
     const parentEvent = await prisma.event.create({
       data: {
-        ...body,
-        startsAt,
-        endsAt,
+        ...eventData,
+        startsAt: repeatDates[0],
+        endsAt: new Date(repeatDates[0].getTime() + duration),
       },
     });
-
-    if (repeatDates.length <= 1) {
-      return parentEvent;
-    }
 
     // Create the recurring events as children of the parent event
     const childEvents = await prisma.$transaction(
       repeatDates.slice(1).map((date) =>
         prisma.event.create({
           data: {
-            ...body,
+            ...eventData,
             startsAt: date,
             endsAt: new Date(date.getTime() + duration),
             recurringEventId: parentEvent.id,
-            recurrenceRule: body.recurrenceRule,
           },
         })
       ),

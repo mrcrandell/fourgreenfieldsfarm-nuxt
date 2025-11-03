@@ -3,3 +3,15 @@
 @use "@/assets/scss/_buttons.scss" as *;
 @use "@/assets/scss/_forms.scss" as *;
 @use "@/assets/scss/_tables.scss" as *;
+
+// Utility classes
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
