@@ -21,6 +21,8 @@ const alert = ref({
 });
 
 const isLoading = ref(false);
+const isDeleteModalOpen = ref(false);
+const deleteScope = ref("single");
 const errorsRaw = ref([]);
 
 const formData = ref({
@@ -321,19 +323,11 @@ function generateRecurrenceRule() {
 async function deleteEvent() {
   if (!eventId.value) return;
 
-  const confirmMessage =
-    formData.value.scope === "all"
-      ? "Are you sure you want to delete ALL events in this recurring series? This action cannot be undone."
-      : formData.value.scope === "future"
-      ? "Are you sure you want to delete this and all future events in this series? This action cannot be undone."
-      : "Are you sure you want to delete this event? This action cannot be undone.";
-
-  if (!confirm(confirmMessage)) return;
-
+  isDeleteModalOpen.value = false;
   isLoading.value = true;
 
   try {
-    await $fetch(`/api/events/${eventId.value}?scope=${formData.value.scope}`, {
+    await $fetch(`/api/events/${eventId.value}?scope=${deleteScope.value}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${authStore.token}`,
@@ -360,6 +354,12 @@ async function deleteEvent() {
   } finally {
     isLoading.value = false;
   }
+}
+
+// Open delete modal and reset scope
+function openDeleteModal() {
+  deleteScope.value = "single"; // Reset to default
+  isDeleteModalOpen.value = true;
 }
 
 // Watch for recurring changes to update recurrenceRule
@@ -586,7 +586,7 @@ onMounted(() => {
       >
         <div class="row">
           <div class="col">
-            <label for="recurring-interval">Repeat Every*</label>
+            <label for="recurring-interval">Repeat Every</label>
           </div>
           <div class="col-md-6 form-group">
             <input
@@ -630,7 +630,7 @@ onMounted(() => {
         </div>
 
         <div class="form-group">
-          <label>End Recurrence {{ formData.recurringCount }}</label>
+          <label>End Recurrence</label>
           <div class="form-check">
             <input
               id="end-never"
@@ -730,7 +730,16 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="form-group form-group-submit">
+      <div class="btn-container">
+        <button
+          v-if="eventId"
+          type="button"
+          class="btn btn-danger ms-2"
+          :disabled="isLoading"
+          @click="openDeleteModal"
+        >
+          Delete
+        </button>
         <button
           type="submit"
           class="btn btn-submit btn-primary"
@@ -742,22 +751,85 @@ onMounted(() => {
         </button>
         <button
           type="button"
-          class="btn btn-secondary ms-2"
+          class="btn btn-outline-primary"
           @click="router.push('/admin/events')"
         >
           Cancel
         </button>
-        <button
-          v-if="eventId"
-          type="button"
-          class="btn btn-danger ms-2"
-          :disabled="isLoading"
-          @click="deleteEvent"
-        >
-          Delete
-        </button>
       </div>
     </form>
+    <BaseModal
+      class="delete-modal"
+      :is-shown="isDeleteModalOpen"
+      @closed="isDeleteModalOpen = false"
+    >
+      <template #header>Confirm Delete</template>
+      <div class="delete-modal-body">
+        <p>
+          {{
+            formData.recurrenceRule
+              ? "This is a recurring event. What would you like to delete?"
+              : "Are you sure you want to delete this event?"
+          }}
+        </p>
+
+        <div v-if="formData.recurrenceRule" class="form-group mb-3">
+          <div class="form-check">
+            <input
+              id="delete-single"
+              v-model="deleteScope"
+              type="radio"
+              class="form-check-input"
+              value="single"
+              name="delete-scope"
+            />
+            <label class="form-check-label" for="delete-single">
+              This event only
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              id="delete-future"
+              v-model="deleteScope"
+              type="radio"
+              class="form-check-input"
+              value="future"
+              name="delete-scope"
+            />
+            <label class="form-check-label" for="delete-future">
+              This and all future events
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              id="delete-all"
+              v-model="deleteScope"
+              type="radio"
+              class="form-check-input"
+              value="all"
+              name="delete-scope"
+            />
+            <label class="form-check-label" for="delete-all">
+              All events in this series
+            </label>
+          </div>
+        </div>
+
+        <p class="text-muted small">This action cannot be undone.</p>
+
+        <div class="btn-container">
+          <button class="btn btn-danger" @click="deleteEvent">Delete</button>
+          <button
+            class="btn btn-outline-primary"
+            @click="isDeleteModalOpen = false"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
@@ -800,72 +872,28 @@ onMounted(() => {
   }
 }
 
-.form-control:focus {
-  border-color: #647b97;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(100, 123, 151, 0.25);
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: rem(16);
 }
 
-.form-control.is-invalid {
-  border-color: #e74c3c;
-}
+.delete-modal {
+  .delete-modal-body {
+    padding: rem(16);
 
-.invalid-feedback {
-  display: block;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 0.875rem;
-  color: #e74c3c;
-}
+    .form-group {
+      margin-bottom: 1rem;
 
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+      .form-check {
+        margin-bottom: 0.5rem;
 
-.btn-primary {
-  color: #fff;
-  background-color: #647b97;
-  border-color: #647b97;
-}
-
-.btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-.btn-danger {
-  color: #fff;
-  background-color: #dc3545;
-  border-color: #dc3545;
-}
-
-.btn-primary:hover:not(:disabled),
-.btn-secondary:hover:not(:disabled),
-.btn-danger:hover:not(:disabled) {
-  filter: brightness(90%);
-}
-
-.btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.btn-submit {
-  min-width: 120px;
+        .form-check-label {
+          margin-left: 0.25rem;
+        }
+      }
+    }
+  }
 }
 
 .alert {

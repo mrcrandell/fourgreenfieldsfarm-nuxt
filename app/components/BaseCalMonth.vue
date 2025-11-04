@@ -38,8 +38,8 @@ const daysInMonth = computed(() =>
 const weekdays = computed(() => {
   const days = [];
   for (let i = 0; i < 7; i++) {
-    // Create a date for Sunday + i days
-    const day = new Date(2024, 0, i + 1); // Using a consistent year/month
+    // Create a date for Sunday + i days (January 7, 2024 was a Sunday)
+    const day = new Date(2024, 0, 7 + i); // Using a consistent year/month starting from Sunday
     days.push(format(day, props.weekdayFormat));
   }
   return days;
@@ -73,7 +73,7 @@ const weekdays = computed(() => {
 
     <div class="calendar-grid">
       <!-- Slot for actual calendar days -->
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>
