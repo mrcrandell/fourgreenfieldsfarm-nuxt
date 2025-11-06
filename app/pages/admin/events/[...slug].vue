@@ -22,7 +22,6 @@ const alert = ref({
 
 const isLoading = ref(false);
 const isDeleteModalOpen = ref(false);
-const deleteScope = ref("single");
 const errorsRaw = ref([]);
 
 const formData = ref({
@@ -183,6 +182,7 @@ async function submitForm() {
         status: "danger",
         message: "Please correct the errors in red on the form.",
       };
+      console.log(toRaw(formData.value));
       console.log(error);
       errorsRaw.value = error.details;
       return;
@@ -319,47 +319,31 @@ function generateRecurrenceRule() {
   return rule;
 }
 
-// Delete event
-async function deleteEvent() {
-  if (!eventId.value) return;
-
-  isDeleteModalOpen.value = false;
-  isLoading.value = true;
-
-  try {
-    await $fetch(`/api/events/${eventId.value}?scope=${deleteScope.value}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${authStore.token}`,
-      },
-    });
-
-    alert.value = {
-      show: true,
-      status: "success",
-      message: "Event deleted successfully",
-    };
-
-    // Redirect after a brief delay to show the success message
-    setTimeout(() => {
-      router.push("/admin/events");
-    }, 1000);
-  } catch (error) {
-    console.error("Delete event error:", error);
+// Handle delete modal events
+function handleDeleteResult(result) {
+  if (result.error) {
     alert.value = {
       show: true,
       status: "danger",
-      message: error?.data?.message || "Failed to delete event.",
+      message: result.message,
     };
-  } finally {
-    isLoading.value = false;
+  } else {
+    alert.value = {
+      show: true,
+      status: "success",
+      message: result.message,
+    };
   }
 }
 
-// Open delete modal and reset scope
+// Open delete modal
 function openDeleteModal() {
-  deleteScope.value = "single"; // Reset to default
   isDeleteModalOpen.value = true;
+}
+
+// Close delete modal
+function closeDeleteModal() {
+  isDeleteModalOpen.value = false;
 }
 
 // Watch for recurring changes to update recurrenceRule
@@ -758,78 +742,15 @@ onMounted(() => {
         </button>
       </div>
     </form>
-    <BaseModal
-      class="delete-modal"
-      :is-shown="isDeleteModalOpen"
-      @closed="isDeleteModalOpen = false"
-    >
-      <template #header>Confirm Delete</template>
-      <div class="delete-modal-body">
-        <p>
-          {{
-            formData.recurrenceRule
-              ? "This is a recurring event. What would you like to delete?"
-              : "Are you sure you want to delete this event?"
-          }}
-        </p>
 
-        <div v-if="formData.recurrenceRule" class="form-group mb-3">
-          <div class="form-check">
-            <input
-              id="delete-single"
-              v-model="deleteScope"
-              type="radio"
-              class="form-check-input"
-              value="single"
-              name="delete-scope"
-            />
-            <label class="form-check-label" for="delete-single">
-              This event only
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              id="delete-future"
-              v-model="deleteScope"
-              type="radio"
-              class="form-check-input"
-              value="future"
-              name="delete-scope"
-            />
-            <label class="form-check-label" for="delete-future">
-              This and all future events
-            </label>
-          </div>
-
-          <div class="form-check">
-            <input
-              id="delete-all"
-              v-model="deleteScope"
-              type="radio"
-              class="form-check-input"
-              value="all"
-              name="delete-scope"
-            />
-            <label class="form-check-label" for="delete-all">
-              All events in this series
-            </label>
-          </div>
-        </div>
-
-        <p class="text-muted small">This action cannot be undone.</p>
-
-        <div class="btn-container">
-          <button class="btn btn-danger" @click="deleteEvent">Delete</button>
-          <button
-            class="btn btn-outline-primary"
-            @click="isDeleteModalOpen = false"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </BaseModal>
+    <AdminDeleteModal
+      v-if="eventId"
+      :event-id="eventId"
+      :is-recurring="!!formData.recurrenceRule"
+      :is-open="isDeleteModalOpen"
+      @close="closeDeleteModal"
+      @deleted="handleDeleteResult"
+    />
   </div>
 </template>
 
@@ -876,24 +797,6 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   gap: rem(16);
-}
-
-.delete-modal {
-  .delete-modal-body {
-    padding: rem(16);
-
-    .form-group {
-      margin-bottom: 1rem;
-
-      .form-check {
-        margin-bottom: 0.5rem;
-
-        .form-check-label {
-          margin-left: 0.25rem;
-        }
-      }
-    }
-  }
 }
 
 .alert {

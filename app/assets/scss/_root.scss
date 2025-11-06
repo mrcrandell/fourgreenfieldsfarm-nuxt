@@ -4,6 +4,10 @@
 @use "_mixins.scss" as *;
 
 :root {
+  @each $color, $value in $grays {
+    --gray-#{$color}: #{$value};
+  }
+
   @each $color, $value in $colors {
     --#{$color}: #{$value};
   }
@@ -12,8 +16,14 @@
     --#{$color}: #{$value};
   }
 
+  --white: #{$white};
+  --black: #{$black};
+
   --white-rgb: #{to-rgb($white)};
   --black-rgb: #{to-rgb($black)};
+
+  --body-color: #{$body-color};
+  --body-bg: #{$body-bg};
 
   // Fonts
 

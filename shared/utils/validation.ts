@@ -51,3 +51,33 @@ export const contactValidationSchema = Joi.object().keys({
     }),
   token: Joi.string().trim().required(),
 });
+
+export const changePasswordValidationSchema = Joi.object().keys({
+  currentPassword: Joi.string()
+    .trim()
+    .min(6)
+    .required()
+    .messages({
+      "string.min": "Current password must be at least 6 characters.",
+      "string.empty": "Please enter your current password.",
+      "any.required": "Please enter your current password.",
+    }),
+  newPassword: Joi.string()
+    .trim()
+    .min(6)
+    .required()
+    .messages({
+      "string.min": "New password must be at least 6 characters.",
+      "string.empty": "Please enter a new password.",
+      "any.required": "Please enter a new password.",
+    }),
+  confirmPassword: Joi.string()
+    .trim()
+    .valid(Joi.ref("newPassword"))
+    .required()
+    .messages({
+      "any.only": "Passwords do not match.",
+      "string.empty": "Please confirm your new password.",
+      "any.required": "Please confirm your new password.",
+    }),
+});

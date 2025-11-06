@@ -21,7 +21,7 @@
   line-height: $input-line-height;
   color: $input-color;
   appearance: none; // Fix appearance for date inputs in Safari
-  background-color: $input-bg;
+  background-color: var(--input-bg, #{$input-bg});
   background-clip: padding-box;
   border: $input-border-width solid $input-border-color;
 
@@ -144,7 +144,7 @@ textarea {
   line-height: $form-select-line-height;
   color: $form-select-color;
   appearance: none;
-  background-color: $form-select-bg;
+  background-color: var(--input-bg, #{$input-bg});
   background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
   background-repeat: no-repeat;
   background-position: $form-select-bg-position;

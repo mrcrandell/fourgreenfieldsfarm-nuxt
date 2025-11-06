@@ -36,7 +36,8 @@ export const eventValidationSchema = Joi.object({
     }),
     otherwise: Joi.string().allow("").optional(),
   }),
-  recurrenceEnds: Joi.string().valid("NEVER", "COUNT", "UNTIL").optional(),
+  recurrenceEnds: Joi.string().valid("NEVER", "COUNT", "UNTIL").allow(null)
+    .optional(),
   recurringFrequency: Joi.string().valid("DAILY", "WEEKLY", "MONTHLY", "YEARLY")
     .when("isRecurring", {
       is: true,

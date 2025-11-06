@@ -13,8 +13,10 @@
   --headings-font-family: #{meta.inspect($font-family-sans-serif)};
   --h1-color: #{$rainmaker};
   --h2-color: #{$rainmaker};
+  --body-bg: #{$gray-200};
+  --input-bg: #{$white};
   min-height: 100vh;
-  background-color: $gray-200;
+  background-color: var(--body-bg);
 
   .pagination {
     --pagination-active-bg: #{$rainmaker};
@@ -37,6 +39,10 @@
     margin: 0;
     font-size: rem(24);
     color: $white;
+  }
+
+  .btn svg {
+    fill: currentColor;
   }
 }
 

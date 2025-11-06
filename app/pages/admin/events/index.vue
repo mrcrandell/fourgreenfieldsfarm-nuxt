@@ -22,6 +22,8 @@ const events = ref([]);
 const totalEvents = ref(0);
 const showPastEvents = ref(false);
 const calendarEvents = ref([]);
+const isDeleteModalOpen = ref(false);
+const eventToDelete = ref(null);
 
 // Handle month parameter
 const currentDate = computed(() => {
@@ -113,17 +115,22 @@ function formatDate(date) {
   return format(new Date(date), "MMM d, yyyy h:mm a");
 }
 
-// Placeholder functions for CRUD operations
-function addEvent() {
-  console.log("Add event clicked");
+function deleteEvent(event) {
+  eventToDelete.value = event;
+  isDeleteModalOpen.value = true;
 }
 
-function editEvent(id) {
-  console.log("Edit event clicked:", id);
+// Handle delete modal events
+function handleDeleteResult(result) {
+  if (!result.error) {
+    loadEvents(currentPage.value);
+  }
 }
 
-function deleteEvent(id) {
-  console.log("Delete event clicked:", id);
+// Close delete modal
+function closeDeleteModal() {
+  isDeleteModalOpen.value = false;
+  eventToDelete.value = null;
 }
 
 // Function to load events for calendar view
@@ -164,22 +171,35 @@ onMounted(() => {
   <div class="container-fluid">
     <header class="page-header">
       <h1>Event Management</h1>
+      <routerLink class="btn btn-primary" to="/admin/events/add"
+        >Add New Event</routerLink
+      >
     </header>
 
-    <routerLink class="btn btn-primary" to="/admin/events/add"
-      >Add New Event</routerLink
-    >
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <button class="nav-link active" @click="view = 'month'">Month</button>
+        <button
+          class="nav-link"
+          :class="{ active: view === 'month' }"
+          @click="view = 'month'"
+        >
+          Month
+        </button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" @click="view = 'list'">List</button>
+        <button
+          class="nav-link"
+          :class="{ active: view === 'list' }"
+          @click="view = 'list'"
+        >
+          List
+        </button>
       </li>
     </ul>
     <div v-if="view === 'month'" class="tab">
       <BaseCalMonth
         :month="currentDate"
+        :is-admin="true"
         @previous-month="
           router.push({
             query: {
@@ -201,6 +221,15 @@ onMounted(() => {
                 currentDate.getMonth() === 11
                   ? currentDate.getFullYear() + 1
                   : currentDate.getFullYear(),
+            },
+          })
+        "
+        @today="
+          router.push({
+            query: {
+              ...route.query,
+              month: new Date().getMonth() + 1,
+              year: new Date().getFullYear(),
             },
           })
         "
@@ -239,8 +268,16 @@ onMounted(() => {
           <tbody>
             <tr v-for="event in events" :key="event.id">
               <td>{{ event.name }}</td>
-              <td>{{ formatDate(event.startsAt) }}</td>
-              <td>{{ formatDate(event.endsAt) }}</td>
+              <td>
+                {{
+                  event.isAllDay
+                    ? format(new Date(event.startsAt), "MMM d, yyyy")
+                    : formatDate(event.startsAt)
+                }}
+              </td>
+              <td>
+                {{ event.isHasEndsAt ? formatDate(event.endsAt) : "--" }}
+              </td>
               <td>
                 <span
                   class="badge"
@@ -250,16 +287,16 @@ onMounted(() => {
                 </span>
               </td>
               <td>
-                <div class="btn-group" role="group">
-                  <button
+                <div class="btn-container">
+                  <router-link
+                    :to="`/admin/events/${event.id}`"
                     class="btn btn-sm btn-outline-primary"
-                    @click="editEvent(event.id)"
                   >
                     Edit
-                  </button>
+                  </router-link>
                   <button
                     class="btn btn-sm btn-danger"
-                    @click="deleteEvent(event.id)"
+                    @click="deleteEvent(event)"
                   >
                     Delete
                   </button>
@@ -275,11 +312,78 @@ onMounted(() => {
 
       <!-- Pagination -->
       <BasePagination
+        class="pagination-container"
         :current-page="currentPage"
         :total-pages="totalPages"
         label="Event pagination"
         @go-to-page="changePage"
       />
     </div>
+
+    <!-- Delete Modal -->
+    <AdminDeleteModal
+      :event-id="eventToDelete?.id || ''"
+      :is-recurring="!!eventToDelete?.recurrenceRule"
+      :is-open="isDeleteModalOpen"
+      @close="closeDeleteModal"
+      @deleted="handleDeleteResult"
+    />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: rem(32);
+}
+
+.nav-tabs {
+  --nav-tabs-border-width: #{rem(1)};
+  --nav-tabs-border-color: var(--primary);
+  --nav-link-padding-x: 1rem;
+  --nav-link-padding-y: 0.5rem;
+  --nav-link-color: var(--link-color);
+  --nav-link-hover-color: var(--link-hover-color);
+  --nav-link-disabled-color: var(--secondary-color);
+  --nav-tabs-link-active-border-color: var(--primary) var(--primary)
+    var(--body-bg);
+  border-bottom: var(--nav-tabs-border-width) solid var(--nav-tabs-border-color);
+
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: rem(32);
+  list-style: none;
+
+  .nav-link {
+    margin-bottom: calc(-1 * #{rem(1)});
+    border: rem(1) solid transparent;
+    border-top-left-radius: rem(6);
+    border-top-right-radius: rem(6);
+    display: block;
+    padding: rem(8) rem(16);
+    text-decoration: none;
+    background: 0 0;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
+
+    &.active {
+      color: var(--nav-tabs-link-active-color);
+      background-color: var(--nav-tabs-link-active-bg);
+      border-color: var(--nav-tabs-link-active-border-color);
+    }
+  }
+}
+
+.table .btn-container {
+  display: flex;
+  gap: rem(8);
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+</style>

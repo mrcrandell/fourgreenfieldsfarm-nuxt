@@ -10,6 +10,29 @@ export default defineNuxtConfig({
     "pinia-plugin-persistedstate/nuxt",
   ],
 
+  nitro: {
+    routeRules: {
+      "/admin": { redirect: "/admin/events" },
+    },
+  },
+
+  fonts: {
+    families: [
+      {
+        name: "Cardo",
+        provider: "google",
+        weights: [400, 700],
+        styles: ["normal", "italic"],
+      },
+      {
+        name: "Lato",
+        provider: "google",
+        weights: [100, 300, 400, 700, 900],
+        styles: ["normal", "italic"],
+      },
+    ],
+  },
+
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET || "your_jwt_secret",
     mailgunApi: process.env.MAILGUN_API_KEY || "",
@@ -21,6 +44,23 @@ export default defineNuxtConfig({
       },
     },
   },
+  components: [
+    // ~/calendar-module/components/event/Update.vue => <EventUpdate />
+    // { path: '~/calendar-module/components' },
+
+    // ~/components/icons/IconArrowLeft.vue => <IconArrowLeft />
+    { path: "~/components/icons", pathPrefix: false },
+
+    // ~/components/special-components/Btn.vue => <SpecialBtn />
+    // { path: '~/components/special-components', prefix: 'Special' },
+
+    // It's important that this comes last if you have overrides you wish to apply
+    // to sub-directories of `~/components`.
+    //
+    // ~/components/Btn.vue => <Btn />
+    // ~/components/base/Btn.vue => <BaseBtn />
+    "~/components",
+  ],
 
   vite: {
     css: {
