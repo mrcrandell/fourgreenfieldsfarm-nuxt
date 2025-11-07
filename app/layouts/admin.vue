@@ -1,7 +1,6 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 import { useRouter } from "vue-router";
-import BaseLogoNoWords from "~/components/BaseLogoNoWords.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
