@@ -23,7 +23,7 @@ const handleLogout = () => {
   <div class="admin-layout">
     <header class="admin-header">
       <h1>
-        <span class="logo-container"><BaseLogoNoWords /></span>
+        <span class="logo-container"><AppLogoNoWords /></span>
         <span>Admin</span>
       </h1>
       <div class="dropdown">

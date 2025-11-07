@@ -1,3 +1,7 @@
+@use "_variables.scss" as *;
+@use "_functions.scss" as *;
+@use "_mixins.scss" as *;
+
 @use "@/assets/scss/_root.scss" as *;
 @use "@/assets/scss/_reboot.scss" as *;
 @use "@/assets/scss/_buttons.scss" as *;
@@ -5,6 +9,13 @@
 @use "@/assets/scss/_tables.scss" as *;
 @use "@/assets/scss/_dropdowns.scss" as *;
 @use "@/assets/scss/_alerts.scss" as *;
+
+body {
+  @include bp-md-tablet {
+    background: url("~/assets/img/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+  }
+}
 
 // Utility classes
 .sr-only {

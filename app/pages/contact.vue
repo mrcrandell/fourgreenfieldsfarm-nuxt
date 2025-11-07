@@ -1,13 +1,18 @@
 <script setup>
+// Set the page title
+useSeoMeta({
+  title: "Contact",
+});
+
 const alert = ref({
   show: false,
-  status: '',
-  message: '',
+  status: "",
+  message: "",
 });
-const name = ref('');
-const email = ref('');
-const phone = ref('');
-const messageText = ref('');
+const name = ref("");
+const email = ref("");
+const phone = ref("");
+const messageText = ref("");
 const token = ref(null);
 const turnstileRef = ref(null);
 const isLoading = ref(false);
@@ -15,7 +20,7 @@ const errorsRaw = ref([]);
 
 const errors = computed(() => {
   const errors = {};
-  errorsRaw.value.forEach(error => {
+  errorsRaw.value.forEach((error) => {
     const [field] = error.path;
     errors[field] = error.message;
   });
@@ -23,7 +28,7 @@ const errors = computed(() => {
 });
 
 const submitText = computed(() => {
-  return isLoading.value ? 'Sending...' : 'Send Message';
+  return isLoading.value ? "Sending..." : "Send Message";
 });
 
 async function submitForm() {
@@ -35,44 +40,48 @@ async function submitForm() {
     email: email.value,
     phone: phone.value,
     message: messageText.value,
-    token: token.value
-  }
+    token: token.value,
+  };
 
-  const { error } = contactValidationSchema.validate(formData, { abortEarly: false });
+  const { error } = contactValidationSchema.validate(formData, {
+    abortEarly: false,
+  });
 
   if (error) {
     isLoading.value = false;
     alert.value = {
       show: true,
-      status: 'danger',
-      message: 'Please correct the errors in red on the form.',
+      status: "danger",
+      message: "Please correct the errors in red on the form.",
     };
     errorsRaw.value = error.details;
     return;
   }
 
   try {
-    const data = await $fetch('/api/contact', {
-      method: 'POST',
+    const data = await $fetch("/api/contact", {
+      method: "POST",
       body: formData,
     });
 
     alert.value = {
       show: true,
-      status: 'success',
+      status: "success",
       message: data.message,
     };
-    name.value = '';
-    email.value = '';
-    phone.value = '';
-    messageText.value = '';
-  } catch(error) {
+    name.value = "";
+    email.value = "";
+    phone.value = "";
+    messageText.value = "";
+  } catch (error) {
     alert.value = {
       show: true,
-      status: 'danger',
-      message: 'Please correct the errors in red on the form.',
+      status: "danger",
+      message: "Please correct the errors in red on the form.",
     };
-    errorsRaw.value = Array.isArray(error?.data) ? error?.data : [{ path: ['form'], message: error?.data?.message || 'Unknown error' }];
+    errorsRaw.value = Array.isArray(error?.data)
+      ? error?.data
+      : [{ path: ["form"], message: error?.data?.message || "Unknown error" }];
   } finally {
     isLoading.value = false;
     turnstileRef.value?.reset();
@@ -84,10 +93,7 @@ async function submitForm() {
   <div class="contact-form">
     <h1>Contact Four Green Fields Farm</h1>
 
-    <form
-      method="post"
-      @submit.prevent="submitForm($event)"
-    >
+    <form method="post" @submit.prevent="submitForm($event)">
       <div
         v-if="alert.show"
         class="alert"
@@ -107,11 +113,8 @@ async function submitForm() {
           name="name"
           :class="{ 'is-invalid': errors.name }"
           placeholder="Name"
-        >
-        <div
-          v-if="errors.name"
-          class="invalid-feedback"
-        >
+        />
+        <div v-if="errors.name" class="invalid-feedback">
           {{ errors.name }}
         </div>
       </div>
@@ -126,11 +129,8 @@ async function submitForm() {
           name="email"
           :class="{ 'is-invalid': errors.email }"
           placeholder="Email"
-        >
-        <div
-          v-if="errors.email"
-          class="invalid-feedback"
-        >
+        />
+        <div v-if="errors.email" class="invalid-feedback">
           {{ errors.email }}
         </div>
       </div>
@@ -145,11 +145,8 @@ async function submitForm() {
           name="phone"
           :class="{ 'is-invalid': errors.phone }"
           placeholder="Phone"
-        >
-        <div
-          v-if="errors.phone"
-          class="invalid-feedback"
-        >
+        />
+        <div v-if="errors.phone" class="invalid-feedback">
           {{ errors.phone }}
         </div>
       </div>
@@ -164,19 +161,13 @@ async function submitForm() {
           rows="6"
           :class="{ 'is-invalid': errors.message }"
           placeholder="Enter Message"
-        />
-        <div
-          v-if="errors.message"
-          class="invalid-feedback"
-        >
+        ></textarea>
+        <div v-if="errors.message" class="invalid-feedback">
           {{ errors.message }}
         </div>
       </div>
 
-      <NuxtTurnstile
-        ref="turnstileRef"
-        v-model="token"
-      />
+      <NuxtTurnstile ref="turnstileRef" v-model="token" />
 
       <div class="form-group form-group-submit">
         <button
@@ -184,10 +175,7 @@ async function submitForm() {
           class="btn btn-submit btn-primary"
           :disabled="isLoading"
         >
-          <transition
-            name="slide-fade"
-            mode="out-in"
-          >
+          <transition name="slide-fade" mode="out-in">
             <span :key="submitText">{{ submitText }}</span>
           </transition>
         </button>
@@ -259,7 +247,8 @@ label {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border-radius: 4px;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .btn-primary {

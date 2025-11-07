@@ -66,6 +66,11 @@ const pageTitle = computed(() =>
   eventId.value ? "Edit Event" : "Add New Event"
 );
 
+// Set the page title using the existing computed property
+useSeoMeta({
+  title: pageTitle,
+});
+
 async function loadEvent() {
   if (!eventId.value) return;
 

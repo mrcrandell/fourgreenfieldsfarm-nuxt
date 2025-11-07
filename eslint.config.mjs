@@ -9,7 +9,7 @@ export default withNuxt({
       {
         html: {
           void: "always",
-          normal: "never",
+          normal: "any", // Allow both self-closing and non-self-closing for normal HTML elements
           component: "always",
         },
         svg: "always",

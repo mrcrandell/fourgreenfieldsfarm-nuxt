@@ -1,6 +1,11 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 
+// Set the page title
+useSeoMeta({
+  title: "Admin Login",
+});
+
 definePageMeta({
   layout: false,
 });
@@ -99,7 +104,7 @@ async function submitForm() {
   <div class="admin-layout">
     <div class="login-form">
       <h1>
-        <span class="logo-container"><BaseLogoNoWords /></span>
+        <span class="logo-container"><AppLogoNoWords /></span>
         <span>Admin</span>
       </h1>
 

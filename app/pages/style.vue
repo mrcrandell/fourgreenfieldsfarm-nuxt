@@ -1,4 +1,9 @@
 <script setup>
+// Set the page title
+useSeoMeta({
+  title: "Style Guide",
+});
+
 const colorPalette = ref([
   {
     name: "Camarone",

@@ -10,6 +10,22 @@ export default defineNuxtConfig({
     "pinia-plugin-persistedstate/nuxt",
   ],
 
+  app: {
+    head: {
+      title: "Four Green Fields Farm",
+      titleTemplate: "%s - Four Green Fields Farm",
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          name: "description",
+          content:
+            "Four Green Fields Farm - Corn maze, pumpkin patch, hay and sleigh rides in Rodney, MI",
+        },
+      ],
+    },
+  },
+
   nitro: {
     routeRules: {
       "/admin": { redirect: "/admin/events" },

@@ -1,6 +1,11 @@
 <script setup>
 import { useAuthStore } from "~/stores/auth";
 
+// Set the page title
+useSeoMeta({
+  title: "Change Password",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: "auth",

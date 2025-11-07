@@ -7,6 +7,11 @@ import {
   endOfWeek,
 } from "date-fns";
 
+// Set the page title
+useSeoMeta({
+  title: "Events",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: "auth",
