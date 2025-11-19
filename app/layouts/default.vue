@@ -5,6 +5,9 @@
   </div>
 </template>
 
-<style lang="scss">
-@use "@/assets/scss/default-layout.scss" as *;
+<style lang="scss" scoped>
+.default-layout {
+  min-height: 100vh;
+  // Add your default layout styles here
+}
 </style>

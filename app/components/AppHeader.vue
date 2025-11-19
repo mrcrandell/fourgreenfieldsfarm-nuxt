@@ -23,6 +23,12 @@ function closeDropdown() {
         <div>From Ireland to America, We Work the Land</div>
         <div>O Eirinn go Mericea, Oibrimid ar an Talamh</div>
         <div>Rodney, MI 49342</div>
+        <div><a href="tel:231-580-1463">231-580-1463</a></div>
+        <div>
+          <a href="mailto:fourgreenfieldsman@yahoo.com"
+            >fourgreenfieldsman@yahoo.com</a
+          >
+        </div>
       </div>
       <button
         class="btn-toggle"
@@ -38,10 +44,10 @@ function closeDropdown() {
     <nav class="navbar" :class="{ 'is-open': isOpen }">
       <ul>
         <li>
-          <AppHeaderLink to="/history"> Our History </AppHeaderLink>
+          <AppHeaderLink to="/farm-history"> Our History </AppHeaderLink>
         </li>
         <li>
-          <AppHeaderLink to="/syrup"> Syrup </AppHeaderLink>
+          <AppHeaderLink to="/maple-syrup"> Syrup </AppHeaderLink>
         </li>
         <!-- <li><AppHeaderLink to="/honey">Honey</AppHeaderLink></li> -->
         <li v-outside="closeDropdown">
@@ -158,6 +164,13 @@ header.header {
         margin-bottom: 2px;
         color: $camarone;
       }
+      a {
+        color: var(--chicory-flower);
+        text-decoration: none;
+        &:hover {
+          color: var(--balihai);
+        }
+      }
     }
   }
 }
@@ -261,10 +274,27 @@ nav.navbar {
       // padding-left: 0.5rem; // 8px
     }
   }
+  .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 0;
+    padding: 0;
+    @include bp-lg-laptop {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      flex-direction: row;
+    }
+  }
   a {
     display: flex;
     padding: 0.625rem 1rem; // 10px 16px
     color: $camarone;
+    text-decoration: none;
+    align-items: center;
     @include bp-md-tablet {
       // font-size: ;
     }
@@ -281,7 +311,7 @@ nav.navbar {
       @include bp-lg-laptop {
         display: block;
         position: relative;
-        top: 1px;
+        top: rem(-1);
         width: 0.75rem; // 12px
         margin-left: 0.25rem; // 4px
         padding-top: 1px;

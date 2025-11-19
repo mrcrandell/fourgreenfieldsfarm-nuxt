@@ -44,7 +44,7 @@ watch(
       }
       setTimeout(() => {
         isShownComplete.value = true;
-      }, 100);
+      }, 250); // Changed from 100ms to 250ms to match the modal backdrop display time
     } else {
       enableScroll();
       isShownComplete.value = false;
@@ -86,7 +86,9 @@ watch(
   width: auto;
   margin: 0.5rem; // 8px
   pointer-events: none;
-  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 
   @include bp-sm-phone-landscape {
     max-width: 500px;
@@ -97,17 +99,26 @@ watch(
   }
 }
 
-.modal-fade-enter-active,
+.modal.show .modal-dialog {
+  transform: translate(0, 0);
+  opacity: 1;
+}
+
+.modal-fade-enter-active {
+  transition: opacity 0.25s ease;
+}
+
 .modal-fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
-
   .modal-dialog {
     transform: translate(0, -50px);
+    opacity: 0;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
   }
 }
 
@@ -120,7 +131,8 @@ watch(
   z-index: 1055;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgba($color: #000, $alpha: 50%);
+  background-color: rgba($color: #000, $alpha: 25%);
+  backdrop-filter: blur(rem(10));
   outline: 0;
 }
 

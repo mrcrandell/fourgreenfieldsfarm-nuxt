@@ -50,6 +50,7 @@ $rainmaker: color.adjust($chicory-flower, $lightness: -15%); //#465669
 // Theme colors
 $primary: $camarone;
 $secondary: $chicory-flower;
+$tertiary: $chicory-flower;
 $success: $greenhaze;
 $info: $cyan;
 $warning: $supernova;
@@ -60,6 +61,7 @@ $dark: $black;
 $theme-colors: (
   "primary": $primary,
   "secondary": $secondary,
+  "tertiary": $tertiary,
   "success": $success,
   "info": $info,
   "warning": $warning,

@@ -115,7 +115,7 @@
   }
 }
 .btn-tertiary {
-  background-color: $chicory-flower;
+  background-color: var(--tertiary, $chicory-flower);
   border-color: color.adjust($chicory-flower, $lightness: -15%);
   color: #fff;
   &:hover,
