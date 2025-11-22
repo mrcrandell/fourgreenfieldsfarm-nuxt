@@ -5,6 +5,8 @@ import {
   eachDayOfInterval,
   getDay,
   format,
+  startOfWeek,
+  endOfWeek,
 } from "date-fns";
 
 // Set custom title for events page
@@ -127,48 +129,25 @@ watchEffect(async () => {
   currentMonth.value = new Date(year, month, 1);
 
   // Load events for the current month
+  await nextTick();
   await loadEvents();
 });
 
 // Function to load events from API
 async function loadEvents() {
+  const start = startOfWeek(startOfMonth(currentDate.value));
+  const end = endOfWeek(endOfMonth(currentDate.value));
+
   try {
-    // Calculate the date range for the calendar view (including leading/trailing days)
-    const start = startOfMonth(currentMonth.value);
-    const end = endOfMonth(currentMonth.value);
-
-    // Expand to cover the full calendar grid (42 days)
-    const startDay = getDay(start); // 0 = Sunday
-    const calendarStart = new Date(start);
-    calendarStart.setDate(calendarStart.getDate() - startDay);
-
-    const calendarEnd = new Date(end);
-    const totalDays =
-      42 -
-      ((end.getDate() + startDay) % 7 === 0
-        ? 0
-        : 7 - ((end.getDate() + startDay) % 7));
-    calendarEnd.setDate(calendarEnd.getDate() + totalDays);
-
-    const response = await $fetch("/api/events/by-day", {
+    events.value = await $fetch("/api/events/by-day", {
       params: {
-        startsAt: format(calendarStart, "yyyy-MM-dd"),
-        endsAt: format(calendarEnd, "yyyy-MM-dd"),
+        startsAt: format(start, "yyyy-MM-dd"),
+        endsAt: format(end, "yyyy-MM-dd"),
       },
     });
-
-    // Convert API response to events array
-    events.value = [];
-    if (response && Array.isArray(response)) {
-      response.forEach((dayData) => {
-        if (dayData.events && Array.isArray(dayData.events)) {
-          events.value.push(...dayData.events);
-        }
-      });
-    }
+    console.log(toRaw(calendarDays.value));
   } catch (error) {
-    console.error("Failed to load events:", error);
-    events.value = [];
+    console.error("Failed to load calendar events:", error);
   }
 }
 
@@ -177,22 +156,38 @@ const selectedDay = ref(null);
 const selectedEvents = ref([]);
 const isEventModalOpen = ref(false);
 
-// Calculate calendar grid
+const currentDate = computed(() => {
+  if (route.params.slug && route.params.slug.length >= 2) {
+    // Route like /events/2025/10
+    const year = parseInt(route.params.slug[0]);
+    const month = parseInt(route.params.slug[1]) - 1; // Convert to 0-based month
+    return new Date(year, month, 1);
+  }
+  return new Date();
+});
+
 const calendarDays = computed(() => {
-  const start = startOfMonth(currentMonth.value);
-  const end = endOfMonth(currentMonth.value);
-  const daysInMonth = eachDayOfInterval({ start, end });
+  const days = [];
+  const start = startOfWeek(startOfMonth(currentDate.value));
+  const end = endOfWeek(endOfMonth(currentDate.value));
 
-  // Add empty cells for the beginning of the month
-  const startDay = getDay(start); // 0 = Sunday
-  const leadingEmptyDays = Array(startDay).fill(null);
+  const currentDateIter = start;
+  while (currentDateIter <= end) {
+    const formattedDate = format(currentDateIter, "EEEE, MMMM d, yyyy");
+    const dayData = events.value.find((d) => d.day === formattedDate);
 
-  // Add empty cells for the end of the month to complete the grid
-  const totalCells = leadingEmptyDays.length + daysInMonth.length;
-  const remainingCells = 42 - totalCells; // 6 weeks * 7 days
-  const trailingEmptyDays = Array(Math.max(0, remainingCells)).fill(null);
+    days.push({
+      date: new Date(currentDateIter),
+      dayOfMonth: currentDateIter.getDate(),
+      events: dayData ? dayData.events : [],
+      isCurrentMonth:
+        currentDateIter.getMonth() === currentDate.value.getMonth(),
+    });
+    currentDateIter.setDate(currentDateIter.getDate() + 1);
+  }
 
-  return [...leadingEmptyDays, ...daysInMonth, ...trailingEmptyDays];
+  console.log("Calendar Days with Events:", days);
+  return days;
 });
 
 // Handle day click
@@ -228,6 +223,8 @@ const modalDateFormatted = computed(() => {
 
 // Load initial events when component mounts
 onMounted(() => {
+  console.log(currentMonth.value);
+  console.log(currentDate.value);
   loadEvents();
 });
 </script>
@@ -294,8 +291,8 @@ onMounted(() => {
     <div id="calendar" class="calendar-section">
       <BaseCalMonth :month="currentMonth">
         <BaseCalDate
-          v-for="(day, index) in calendarDays"
-          :key="index"
+          v-for="day in calendarDays"
+          :key="day.date"
           :day="day"
           :events="events"
           @day-clicked="handleDayClick"

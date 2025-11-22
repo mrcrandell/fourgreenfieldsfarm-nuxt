@@ -1,5 +1,5 @@
 <script setup>
-import { format, isSameDay } from "date-fns";
+import { format, isSameDay, isSameMonth } from "date-fns";
 
 const props = defineProps({
   day: {
@@ -18,6 +18,12 @@ const emit = defineEmits(["day-clicked"]);
 const isToday = computed(() => {
   if (!props.day) return false;
   return isSameDay(props.day, new Date());
+});
+
+const isCurrentMonth = computed(() => {
+  if (!props.day) return false;
+  const today = new Date();
+  return isSameMonth(props.day.date, today);
 });
 
 const dayEvents = computed(() => {
@@ -46,17 +52,19 @@ function handleDayClick() {
       'has-events': hasEvents,
       'is-today': isToday,
       'is-clickable': hasEvents,
+      'is-empty': day.events.length === 0,
+      'is-not-this-month': !isCurrentMonth,
     }"
     @click="hasEvents && handleDayClick()"
   >
     <div class="day-number">
-      {{ format(day, "d") }}
+      {{ format(day.date, "d") }}
     </div>
 
-    <div v-if="hasEvents" class="event-indicators">
+    <div v-if="day.events" class="event-indicators">
       <div
-        v-for="(event, index) in dayEvents.slice(0, 3)"
-        :key="event.id || index"
+        v-for="event in day.events"
+        :key="event.id"
         class="event-dot"
         :title="event.name"
       ></div>
@@ -68,26 +76,42 @@ function handleDayClick() {
         +{{ dayEvents.length - 3 }}
       </div>
     </div>
+    <div class="day-events">
+      <div
+        v-for="event in day.events"
+        :key="event.id"
+        class="event-item"
+        :class="{ 'is-all-day': event.isAllDay }"
+      >
+        <span
+          >{{
+            !event.isAllDay
+              ? format(
+                  event.startsAt,
+                  new Date(event.startsAt).getMinutes() === 0
+                    ? "haaa"
+                    : "h:mmaaa"
+                )
+              : null
+          }}
+          <strong>{{ event.name }}</strong></span
+        >
+      </div>
+    </div>
   </div>
   <div v-else class="calendar-day empty-day"></div>
 </template>
 
 <style lang="scss" scoped>
 .calendar-day {
-  background-color: var(--bs-white);
-  padding: rem(8);
-  min-height: rem(80);
-  border: 1px solid var(--bs-gray-200);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   cursor: default;
   transition: all 0.2s ease;
 
-  &.empty-day {
-    background-color: var(--bs-gray-50);
-    border-color: var(--bs-gray-100);
+  &.is-empty {
+    aspect-ratio: 4/3;
   }
 
   &.is-clickable {
@@ -120,6 +144,9 @@ function handleDayClick() {
       font-weight: 600;
     }
   }
+  &.is-not-this-month {
+    opacity: 0.75;
+  }
 }
 
 .day-number {
@@ -127,27 +154,67 @@ function handleDayClick() {
   font-size: rem(14);
   color: var(--bs-gray-800);
   margin-bottom: rem(4);
+
+  .is-not-this-month & {
+    font-weight: $font-weight-normal;
+  }
 }
 
-.event-indicators {
+.day-events {
   display: flex;
+  flex-direction: column;
   gap: rem(2);
-  flex-wrap: wrap;
+}
+.event-item {
+  width: 100%;
+  max-width: 100%;
+  text-decoration: none;
+  display: flex;
   align-items: center;
-}
+  @include font-size(rem(8));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @include bp-md-tablet {
+    @include font-size(rem(10));
+  }
+  @include bp-lg-laptop {
+    @include font-size(rem(14));
+  }
 
-.event-dot {
-  width: rem(6);
-  height: rem(6);
-  background-color: var(--primary);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+  &.is-all-day {
+    background-color: var(--primary);
+    padding: 0 rem(4) rem(1) rem(4);
+    color: var(--white);
+    border-radius: rem(2);
+    @include bp-lg-laptop {
+      padding: rem(2) rem(8) rem(2) rem(12);
+      border-radius: rem(20);
+    }
+  }
 
-.more-events {
-  font-size: rem(10);
-  color: var(--primary);
-  font-weight: 600;
-  margin-left: rem(2);
+  &:not(.is-all-day)::before {
+    display: block;
+    content: "";
+    background-color: var(--primary);
+    width: rem(8);
+    height: rem(8);
+    margin-right: rem(2);
+    border-radius: 50%;
+    flex-shrink: 0;
+    @include bp-lg-laptop {
+      margin-right: rem(6);
+      width: rem(12);
+      height: rem(12);
+    }
+  }
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
 }
 </style>

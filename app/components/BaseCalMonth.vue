@@ -23,6 +23,7 @@ const props = defineProps({
     default: false,
   },
 });
+const emit = defineEmits(["previous-month", "next-month", "today"]);
 
 // Get first day of the month
 const firstDayOfMonth = computed(() => startOfMonth(props.month));
