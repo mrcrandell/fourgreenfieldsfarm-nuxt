@@ -30,6 +30,14 @@ const firstDayOfMonth = computed(() => startOfMonth(props.month));
 // Get last day of the month
 const lastDayOfMonth = computed(() => endOfMonth(props.month));
 
+// Get all days in the month
+const daysInMonth = computed(() =>
+  eachDayOfInterval({
+    start: firstDayOfMonth.value,
+    end: lastDayOfMonth.value,
+  })
+);
+
 // Get weekday names
 const weekdays = computed(() => {
   const days = [];
@@ -73,6 +81,22 @@ const todayUrl = computed(() => {
   }
   return "/events";
 });
+
+// Handle navigation clicks
+function handlePreviousMonth(event) {
+  event.preventDefault();
+  emit("previous-month");
+}
+
+function handleNextMonth(event) {
+  event.preventDefault();
+  emit("next-month");
+}
+
+function handleToday(event) {
+  event.preventDefault();
+  emit("today");
+}
 </script>
 
 <template>
@@ -80,11 +104,20 @@ const todayUrl = computed(() => {
     <div class="calendar-nav">
       <h2>{{ format(props.month, "MMMM yyyy") }}</h2>
       <div class="btn-container">
-        <NuxtLink :to="previousMonthUrl" class="btn btn-outline-primary">
+        <NuxtLink
+          :to="previousMonthUrl"
+          class="btn btn-outline-primary"
+          @click="handlePreviousMonth"
+        >
           <div class="arrow-left"></div>
           Previous
         </NuxtLink>
-        <NuxtLink v-if="isAdmin" :to="todayUrl" class="btn btn-outline-primary">
+        <NuxtLink
+          v-if="isAdmin"
+          :to="todayUrl"
+          class="btn btn-outline-primary"
+          @click="handleToday"
+        >
           Today
         </NuxtLink>
         <NuxtLink
