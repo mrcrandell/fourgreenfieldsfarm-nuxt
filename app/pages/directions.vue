@@ -162,7 +162,6 @@ onUnmounted(() => {
 .map-container {
   margin: 2rem 0;
   border: 4px solid $camarone;
-  border-radius: rem(8);
   overflow: hidden;
   @include shadow-1();
 }

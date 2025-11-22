@@ -5,9 +5,9 @@ import {
   eachDayOfInterval,
   format,
   getDay,
+  addMonths,
+  subMonths,
 } from "date-fns";
-
-const emit = defineEmits(["previous-month", "next-month", "today"]);
 
 const props = defineProps({
   month: {
@@ -30,14 +30,6 @@ const firstDayOfMonth = computed(() => startOfMonth(props.month));
 // Get last day of the month
 const lastDayOfMonth = computed(() => endOfMonth(props.month));
 
-// Get all days in the month
-const daysInMonth = computed(() =>
-  eachDayOfInterval({
-    start: firstDayOfMonth.value,
-    end: lastDayOfMonth.value,
-  })
-);
-
 // Get weekday names
 const weekdays = computed(() => {
   const days = [];
@@ -48,6 +40,39 @@ const weekdays = computed(() => {
   }
   return days;
 });
+
+// Calculate previous and next month URLs for SEO
+const previousMonthUrl = computed(() => {
+  const prevMonth = subMonths(props.month, 1);
+  const year = format(prevMonth, "yyyy");
+  const month = format(prevMonth, "MM");
+
+  if (props.isAdmin) {
+    return `/admin/events?year=${year}&month=${month}`;
+  }
+  return `/events/${year}/${month}`;
+});
+
+const nextMonthUrl = computed(() => {
+  const nextMonth = addMonths(props.month, 1);
+  const year = format(nextMonth, "yyyy");
+  const month = format(nextMonth, "MM");
+
+  if (props.isAdmin) {
+    return `/admin/events?year=${year}&month=${month}`;
+  }
+  return `/events/${year}/${month}`;
+});
+
+const todayUrl = computed(() => {
+  if (props.isAdmin) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    return `/admin/events?year=${year}&month=${month}`;
+  }
+  return "/events";
+});
 </script>
 
 <template>
@@ -55,24 +80,21 @@ const weekdays = computed(() => {
     <div class="calendar-nav">
       <h2>{{ format(props.month, "MMMM yyyy") }}</h2>
       <div class="btn-container">
-        <button
-          class="btn btn-outline-primary"
-          @click="$emit('previous-month')"
-        >
+        <NuxtLink :to="previousMonthUrl" class="btn btn-outline-primary">
           <div class="arrow-left"></div>
           Previous
-        </button>
-        <button
-          v-if="isAdmin"
-          class="btn btn-outline-primary"
-          @click="$emit('today')"
-        >
+        </NuxtLink>
+        <NuxtLink v-if="isAdmin" :to="todayUrl" class="btn btn-outline-primary">
           Today
-        </button>
-        <button class="btn btn-outline-primary" @click="$emit('next-month')">
+        </NuxtLink>
+        <NuxtLink
+          :to="nextMonthUrl"
+          class="btn btn-outline-primary"
+          @click="handleNextMonth"
+        >
           Next
           <div class="arrow-right"></div>
-        </button>
+        </NuxtLink>
       </div>
     </div>
 

@@ -287,6 +287,8 @@ nav.navbar {
       right: 0;
       z-index: 10;
       flex-direction: row;
+      width: fit-content;
+      margin: 0 auto;
     }
   }
   a {
@@ -322,7 +324,8 @@ nav.navbar {
     }
   }
   > ul li ul a {
-    padding-left: 1.75rem; // 28px
+    padding-left: rem(28);
+    padding-right: rem(28);
   }
 
   // Desktop View

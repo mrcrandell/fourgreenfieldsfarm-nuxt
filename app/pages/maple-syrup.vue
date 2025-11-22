@@ -144,7 +144,7 @@ const pricingData = [
       </p>
     </div>
 
-    <div class="contact-section">
+    <HighlightedSection class="contact-section">
       <h2>Purchase Our Syrup</h2>
       <p>
         If you would like to purchase some of our syrup, you can contact Kevin
@@ -157,7 +157,7 @@ const pricingData = [
         plastic and while we do our best we can't guarantee glass won't get
         broken in transit. Contact us for details.
       </p>
-    </div>
+    </HighlightedSection>
 
     <div class="pricing-section">
       <h3>Our price list is below.</h3>
@@ -240,8 +240,12 @@ const pricingData = [
 
   .gallery-left,
   .gallery-right {
+    overflow: hidden;
+
     :deep(.gallery) {
       margin: 0 auto;
+      max-width: 100%;
+      width: 100%;
       border: 4px solid $camarone;
       @include shadow-1();
     }
@@ -256,7 +260,7 @@ const pricingData = [
   align-items: start;
 
   @include bp-md-tablet {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
   }
 
@@ -270,7 +274,7 @@ const pricingData = [
   .image-right {
     :deep(.gallery) {
       margin: 0 auto;
-      max-width: rem(350);
+      // max-width: rem(350);
       border: 4px solid $camarone;
       @include shadow-1();
     }
@@ -282,15 +286,6 @@ const pricingData = [
 }
 
 .contact-section {
-  background: linear-gradient(
-    135deg,
-    rgba($camarone, 0.05) 0%,
-    rgba($camarone, 0.1) 100%
-  );
-  padding: 2rem;
-  border-left: 4px solid $camarone;
-  border-radius: rem(8);
-
   a {
     color: var(--primary);
     text-decoration: none;

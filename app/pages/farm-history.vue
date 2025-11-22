@@ -79,7 +79,7 @@ const galleryImgs = [
       </div>
     </div>
 
-    <div class="heritage-section">
+    <HighlightedSection>
       <p>
         The name of the farm comes from our pride in our Irish heritage and
         gratitude for the sacrifices our ancestors made to give us the chance to
@@ -100,7 +100,7 @@ const galleryImgs = [
         mer-i-caw, say-ree-i-meed on toliv" and it means "From Ireland to
         America We work the Land."
       </p>
-    </div>
+    </HighlightedSection>
 
     <div class="closing-section">
       <p>Thank you for coming to our farm and we hope you enjoy your visit.</p>
@@ -182,28 +182,6 @@ const galleryImgs = [
     p {
       margin-bottom: 1rem;
       line-height: 1.6;
-    }
-  }
-}
-
-.heritage-section {
-  margin: 3rem 0;
-  padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba($camarone, 0.05) 0%,
-    rgba($camarone, 0.1) 100%
-  );
-  border-left: 4px solid $camarone;
-  border-radius: rem(8);
-
-  p {
-    margin-bottom: 0;
-    line-height: 1.6;
-    font-size: rem(16);
-
-    @include bp-md-tablet {
-      font-size: rem(17);
     }
   }
 }
