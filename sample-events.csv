@@ -1,0 +1,6 @@
+name,slug,starts_at,ends_at,description,is_featured,is_has_ends_at,is_all_day,is_active,haunted_by
+Halloween Spooktacular,halloween-spooktacular,2024-10-31 18:00:00,2024-10-31 22:00:00,Join us for a night of frightful fun with haunted attractions and spooky activities,1,1,0,1,The Headless Horseman
+Pumpkin Patch Adventure,pumpkin-patch-adventure,2024-10-15 09:00:00,2024-10-15 17:00:00,Pick your perfect pumpkin from our sprawling patch,0,1,0,1,
+Fall Festival Day,fall-festival-day,2024-10-20 00:00:00,2024-10-20 23:59:00,A full day of autumn festivities for the whole family,1,0,1,1,
+Corn Maze Challenge,corn-maze-challenge,2024-09-30 10:00:00,2024-09-30 16:00:00,Get lost in our amazing corn maze,0,1,0,1,Lost Farmer Joe
+Harvest Moon Celebration,harvest-moon-celebration,2024-09-22 19:00:00,2024-09-22 23:00:00,Celebrate the harvest moon with music and dancing,1,1,0,1,

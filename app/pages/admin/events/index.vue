@@ -176,9 +176,16 @@ onMounted(() => {
   <div class="container-fluid">
     <header class="page-header">
       <h1>Event Management</h1>
-      <routerLink class="btn btn-primary" to="/admin/events/add"
-        >Add New Event</routerLink
-      >
+      <div class="header-actions">
+        <routerLink
+          class="btn btn-outline-primary me-2"
+          to="/admin/events/import"
+          >Import Events</routerLink
+        >
+        <routerLink class="btn btn-primary" to="/admin/events/add"
+          >Add New Event</routerLink
+        >
+      </div>
     </header>
 
     <ul class="nav nav-tabs">
@@ -342,6 +349,11 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: rem(32);
+
+  .header-actions {
+    display: flex;
+    gap: rem(8);
+  }
 }
 
 .nav-tabs {
