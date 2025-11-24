@@ -9,12 +9,11 @@ import {
   endOfWeek,
 } from "date-fns";
 
-// Set custom title for events page
-useHead({
-  title: "Calendar - Four Green Fields Farm",
-});
-
 const route = useRoute();
+
+useHead({
+  title: "Events - Four Green Fields Farm",
+});
 
 // Gallery images for events page
 const galleryImgs = [
@@ -191,16 +190,14 @@ const calendarDays = computed(() => {
 });
 
 // Handle day click
-function handleDayClick({ date, events: dayEvents }) {
+function handleDayClick({ date }) {
   selectedDay.value = date;
-  selectedEvents.value = dayEvents;
   isEventModalOpen.value = true;
 }
 
 function closeEventModal() {
   isEventModalOpen.value = false;
   selectedDay.value = null;
-  selectedEvents.value = [];
 }
 
 // Format event time
@@ -218,7 +215,7 @@ function formatEventTime(event) {
 // Format modal date
 const modalDateFormatted = computed(() => {
   if (!selectedDay.value) return "";
-  return format(selectedDay.value, "EEEE, MMMM d, yyyy");
+  return format(selectedDay.value.date, "EEEE, MMMM d, yyyy");
 });
 
 // Load initial events when component mounts
@@ -318,8 +315,12 @@ onMounted(() => {
         </button>
       </template>
 
-      <div v-if="selectedEvents.length" class="events-list">
-        <div v-for="event in selectedEvents" :key="event.id" class="event-item">
+      <div v-if="selectedDay.events.length" class="events-list">
+        <div
+          v-for="event in selectedDay.events"
+          :key="event.id"
+          class="event-item"
+        >
           <div class="event-header">
             <h5 class="event-name">{{ event.name }}</h5>
             <div class="event-time">{{ formatEventTime(event) }}</div>
@@ -332,7 +333,6 @@ onMounted(() => {
     </BaseModal>
   </main>
 </template>
-
 <style lang="scss" scoped>
 .events-page {
   h1 {
@@ -429,13 +429,13 @@ onMounted(() => {
 }
 
 .events-list {
-  padding: 1rem 0;
+  padding: rem(16);
 }
 
 .event-item {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--bs-gray-200);
+  margin-bottom: rem(16);
+  padding-bottom: rem(8);
+  border-bottom: 1px solid var(--gray-200);
 
   &:last-child {
     margin-bottom: 0;

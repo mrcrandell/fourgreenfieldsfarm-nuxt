@@ -1,8 +1,6 @@
 <script setup>
 const route = useRoute();
 
-console.log(); // My home page
-
 const isOpen = ref(false);
 const isMazeMenuOpen = ref(false);
 

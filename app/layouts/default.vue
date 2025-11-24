@@ -1,7 +1,12 @@
+<script setup lang="ts">
+import AppFooter from "~/components/AppFooter.vue";
+</script>
+
 <template>
   <div class="default-layout">
     <AppHeader />
     <slot></slot>
+    <AppFooter />
   </div>
 </template>
 

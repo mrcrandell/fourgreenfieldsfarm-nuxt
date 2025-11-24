@@ -33,13 +33,12 @@ const dayEvents = computed(() => {
   );
 });
 
-const hasEvents = computed(() => dayEvents.value.length > 0);
+const hasEvents = computed(() => props.day.events.length > 0);
 
 function handleDayClick() {
   if (!props.day) return;
   emit("day-clicked", {
     date: props.day,
-    events: dayEvents.value,
   });
 }
 </script>
@@ -52,14 +51,12 @@ function handleDayClick() {
       'has-events': hasEvents,
       'is-today': isToday,
       'is-clickable': hasEvents,
-      'is-empty': day.events.length === 0,
+      'is-empty': !hasEvents,
       'is-not-this-month': !isCurrentMonth,
     }"
     @click="hasEvents && handleDayClick()"
   >
-    <div class="day-number">
-      {{ format(day.date, "d") }}
-    </div>
+    <div class="day-number">{{ format(day.date, "d") }}</div>
 
     <div v-if="day.events" class="event-indicators">
       <div

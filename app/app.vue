@@ -14,7 +14,7 @@
     padding: 2rem;
     margin: 0 auto;
     @include bp-md-tablet {
-      margin: 1rem; // 16px
+      margin: rem(16) rem(16) 0 rem(16); // 16px
       padding: 1.625rem; // 26px
       @include shadow-2();
     }
