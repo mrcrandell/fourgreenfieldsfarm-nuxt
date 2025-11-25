@@ -12,7 +12,7 @@ import {
 const route = useRoute();
 
 useHead({
-  title: "Events - Four Green Fields Farm",
+  title: "Events",
 });
 
 // Gallery images for events page

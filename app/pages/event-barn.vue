@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for event barn page
 useHead({
-  title: "Wedding and Event Barn - Four Green Fields Farm",
+  title: "Wedding and Event Barn",
 });
 
 // Gallery images for different sections

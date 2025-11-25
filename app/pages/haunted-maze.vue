@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for haunted maze page
 useHead({
-  title: "Haunted Maze - Four Green Fields Farm",
+  title: "Haunted Maze",
 });
 
 // Gallery images data for haunted maze

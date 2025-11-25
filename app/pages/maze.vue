@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for maze page
 useHead({
-  title: "How To Play - Corn Maze - Four Green Fields Farm",
+  title: "Maze - How to Play",
 });
 
 // Gallery images data for the maze slideshow

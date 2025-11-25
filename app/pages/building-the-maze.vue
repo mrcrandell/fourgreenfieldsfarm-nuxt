@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for building the maze page
 useHead({
-  title: "Building the Maze - Four Green Fields Farm",
+  title: "Building the Maze",
 });
 
 // Gallery images data for building the maze

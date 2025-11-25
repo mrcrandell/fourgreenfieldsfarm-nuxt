@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for maple syrup page
 useHead({
-  title: "Making Maple Syrup - Four Green Fields Farm",
+  title: "Making Maple Syrup",
 });
 
 // Gallery images data for maple syrup production

@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for pumpkin patch page
 useHead({
-  title: "Pumpkin Patch - Four Green Fields Farm",
+  title: "Pumpkin Patch",
 });
 
 // Gallery images data for pumpkin patch

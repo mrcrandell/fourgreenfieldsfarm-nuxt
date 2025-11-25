@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for farm history page
 useHead({
-  title: "Farm History - Four Green Fields Farm",
+  title: "Farm History",
 });
 
 // Gallery images data

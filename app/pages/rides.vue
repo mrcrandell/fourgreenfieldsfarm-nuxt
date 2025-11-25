@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for rides page
 useHead({
-  title: "It's Time to Slow Down and Relax - Four Green Fields Farm",
+  title: "Hay & Sleigh Rides",
 });
 
 // Gallery images data for hay and sleigh rides (including YouTube video first)

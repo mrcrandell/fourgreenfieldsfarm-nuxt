@@ -1,7 +1,7 @@
 <script setup>
 // Set custom title for directions page
 useHead({
-  title: "Driving Directions - Four Green Fields Farm",
+  title: "Driving Directions",
 });
 
 const mapContainer = ref(null);
