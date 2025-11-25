@@ -9,6 +9,12 @@ function closeDropdown() {
     isMazeMenuOpen.value = false;
   }
 }
+
+// Close menu when route changes
+watch(route, () => {
+  isOpen.value = false;
+  isMazeMenuOpen.value = false;
+});
 </script>
 
 <template>
