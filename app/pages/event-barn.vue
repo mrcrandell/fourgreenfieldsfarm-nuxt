@@ -64,7 +64,7 @@ const weddingArchImgs = [
     <p>
       We are happy to now offer a wedding and event barn for those looking for
       something a little out of the ordinary for their wedding or event. Our
-      barn has a capacity of 100 people. You can increase the number of guests
+      barn has a capacity of 175 people. You can increase the number of guests
       by adding a tent if you wish. The grounds around the barn are very
       expansive. The barn will be a wonderful setting for your wedding or event
       and give you life-long memories. The barn is a "warm weather" venue so we
