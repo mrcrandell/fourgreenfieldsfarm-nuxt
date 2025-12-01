@@ -88,9 +88,9 @@ export default defineEventHandler(async (event) => {
     // Send thank you email to customer
     html = juice(mustache.render(thankYouTemplate, emailData));
     data = {
-      from: "postmaster@mailgun.fourgreenfieldsfarm.com", // Update with actual domain
+      from: "postmaster@mailgun.fourgreenfieldsfarm.com",
       to: body.email,
-      "h:Reply-To": "info@fourgreenfieldsfarm.com", // Update with farm's email
+      "h:Reply-To": "fourgreenfieldsman@yahoo.com",
       subject: "Thank You for Contacting Four Green Fields Farm",
       html,
     };
