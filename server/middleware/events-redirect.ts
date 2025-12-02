@@ -42,4 +42,20 @@ export default defineEventHandler(async (event) => {
       return;
     }
   }
+
+  // Match year-only format: /events/2024
+  const yearOnlyMatch = url.pathname.match(/^\/events\/(\d{4})$/);
+
+  if (yearOnlyMatch) {
+    const [, year] = yearOnlyMatch;
+    const newPath = `/events/${year}/01`; // Default to January
+
+    // Preserve query parameters if any
+    const queryString = url.search;
+    const redirectUrl = queryString ? `${newPath}${queryString}` : newPath;
+
+    // Redirect with 301 (permanent redirect) for SEO
+    await sendRedirect(event, redirectUrl, 301);
+    return;
+  }
 });

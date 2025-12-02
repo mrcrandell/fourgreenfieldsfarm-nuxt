@@ -17,13 +17,13 @@ const emit = defineEmits(["day-clicked"]);
 
 const isToday = computed(() => {
   if (!props.day) return false;
-  return isSameDay(props.day, new Date());
+  return isSameDay(props.day.date, new Date());
 });
 
 const isCurrentMonth = computed(() => {
   if (!props.day) return false;
-  const today = new Date();
-  return isSameMonth(props.day.date, today);
+  // Use the day's own isCurrentMonth property that comes from the parent component
+  return props.day.isCurrentMonth;
 });
 
 const dayEvents = computed(() => {
@@ -106,6 +106,7 @@ function handleDayClick() {
   overflow: hidden;
   cursor: default;
   transition: all 0.2s ease;
+  padding: rem(2);
 
   &.is-empty {
     aspect-ratio: 4/3;
@@ -126,20 +127,7 @@ function handleDayClick() {
   }
 
   &.is-today {
-    background-color: rgba(var(--secondary-rgb), 0.1);
-    border-color: var(--secondary);
-
-    .day-number {
-      background-color: var(--secondary);
-      color: white;
-      border-radius: 50%;
-      width: rem(24);
-      height: rem(24);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-    }
+    background-color: #f5f5f5;
   }
   &.is-not-this-month {
     opacity: 0.75;
