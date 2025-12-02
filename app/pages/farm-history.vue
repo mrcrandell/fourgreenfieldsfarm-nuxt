@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for farm history page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for farm history page
 useHead({
   title: "Farm History",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Learn about Four Green Fields Farm history in Rodney, MI. Established in 2003 on 162 acres with Belgian draft horses Rocky and Charlie. 'Céad Míle Fáilte' - One Hundred Thousand Welcomes!",
+    },
+    {
+      name: "keywords",
+      content:
+        "farm history, Four Green Fields Farm history, Belgian draft horses, Rocky and Charlie horses, 162 acres farm, Rodney Michigan farm history, Irish farm name",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Farm History | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Learn about Four Green Fields Farm history. Established in 2003 on 162 acres with Belgian draft horses Rocky and Charlie. Céad Míle Fáilte!",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/farm-history`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/bald-eagle-pic.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Farm History | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Learn about Four Green Fields Farm history. Established in 2003 on 162 acres with Belgian draft horses.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/bald-eagle-pic.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/farm-history`,
+    },
+  ],
 });
 
 // Gallery images data

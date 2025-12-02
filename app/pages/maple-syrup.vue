@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for maple syrup page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for maple syrup page
 useHead({
   title: "Making Maple Syrup",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Learn about maple syrup production at Four Green Fields Farm in Rodney, MI. Pure maple syrup for sale in glass and plastic containers. Order online with shipping available.",
+    },
+    {
+      name: "keywords",
+      content:
+        "maple syrup, pure maple syrup, maple syrup for sale, making maple syrup, Michigan maple syrup, Four Green Fields Farm syrup, maple syrup production",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Making Maple Syrup | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Learn about maple syrup production at Four Green Fields Farm. Pure maple syrup for sale in glass and plastic containers with shipping available.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/maple-syrup`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/syrup2.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Making Maple Syrup | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Learn about maple syrup production at Four Green Fields Farm. Pure maple syrup for sale with shipping available.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/syrup2.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/maple-syrup`,
+    },
+  ],
 });
 
 // Gallery images data for maple syrup production

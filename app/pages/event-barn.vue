@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for event barn page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for event barn page
 useHead({
   title: "Wedding and Event Barn",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Beautiful wedding and event barn at Four Green Fields Farm in Rodney, MI. Rustic venue for weddings, receptions, and special events. Scenic countryside setting near Big Rapids.",
+    },
+    {
+      name: "keywords",
+      content:
+        "wedding barn, event barn, rustic wedding venue, Four Green Fields Farm weddings, Michigan wedding barn, Rodney wedding venue, barn reception, countryside wedding",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Wedding and Event Barn | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Beautiful wedding and event barn at Four Green Fields Farm. Rustic venue for weddings, receptions, and special events in scenic countryside setting.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/event-barn`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/event-barn/event-barn-para-2-1.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Wedding and Event Barn | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Beautiful wedding and event barn at Four Green Fields Farm. Rustic venue for weddings and special events.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/event-barn/event-barn-para-2-1.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/event-barn`,
+    },
+  ],
 });
 
 // Gallery images for different sections

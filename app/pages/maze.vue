@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for maze page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for maze page
 useHead({
   title: "Maze - How to Play",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Learn how to play our corn maze game at Four Green Fields Farm! Choose from 3 difficulty levels, find treasure chests, and enjoy family fun in our Rodney, MI corn maze.",
+    },
+    {
+      name: "keywords",
+      content:
+        "corn maze rules, maze game, treasure hunt, family activities, corn field, level 1 2 3 maze, Rodney Michigan corn maze",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Corn Maze - How to Play | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Learn how to play our corn maze game! Choose from 3 difficulty levels, find treasure chests, and enjoy family fun in our corn maze.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/maze`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/maze-pic1@2x.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Corn Maze - How to Play | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Learn how to play our corn maze game! Choose from 3 difficulty levels, find treasure chests, and enjoy family fun.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/maze-pic1@2x.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/maze`,
+    },
+  ],
 });
 
 // Gallery images data for the maze slideshow

@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for pumpkin patch page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for pumpkin patch page
 useHead({
   title: "Pumpkin Patch",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Visit our beautiful pumpkin patch at Four Green Fields Farm in Rodney, MI! Pick your perfect pumpkin from our variety of sizes and colors. Family-friendly fall fun near Big Rapids.",
+    },
+    {
+      name: "keywords",
+      content:
+        "pumpkin patch, pick your own pumpkins, fall pumpkins, Halloween pumpkins, pumpkin picking, family activities, Rodney Michigan pumpkin patch",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Pumpkin Patch | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Visit our beautiful pumpkin patch! Pick your perfect pumpkin from our variety of sizes and colors. Family-friendly fall fun near Big Rapids.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/pumpkin-patch`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/pumpkin_patch1.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Pumpkin Patch | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Visit our beautiful pumpkin patch! Pick your perfect pumpkin from our variety of sizes and colors.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/pumpkin_patch1.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/pumpkin-patch`,
+    },
+  ],
 });
 
 // Gallery images data for pumpkin patch

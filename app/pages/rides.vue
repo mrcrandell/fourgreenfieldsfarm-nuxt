@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for rides page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for rides page
 useHead({
   title: "Hay & Sleigh Rides",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Enjoy horse-drawn wagon rides at Four Green Fields Farm! Hay rides through beautiful countryside and sleigh rides when snow permits. Just $2 per person in Rodney, MI.",
+    },
+    {
+      name: "keywords",
+      content:
+        "hay rides, sleigh rides, horse drawn wagon rides, family activities, countryside rides, wagon rides, fall activities, winter activities, Rodney Michigan",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Hay & Sleigh Rides | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Enjoy horse-drawn wagon rides! Hay rides through beautiful countryside and sleigh rides when snow permits. Just $2 per person.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/rides`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/heysleigh1.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Hay & Sleigh Rides | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Enjoy horse-drawn wagon rides! Hay rides through beautiful countryside and sleigh rides when snow permits.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/heysleigh1.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/rides`,
+    },
+  ],
 });
 
 // Gallery images data for hay and sleigh rides (including YouTube video first)

@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for haunted maze page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for haunted maze page
 useHead({
   title: "Haunted Maze",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Experience the thrilling Haunted Maze at Four Green Fields Farm! Friday & Saturday nights in October. Only $5 for spine-chilling fun in our corn maze near Big Rapids, MI.",
+    },
+    {
+      name: "keywords",
+      content:
+        "haunted maze, haunted corn maze, Halloween attraction, spooky corn maze, October haunted maze, Big Rapids Halloween, Rodney Michigan haunted attraction",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Haunted Maze | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Experience the thrilling Haunted Maze! Friday & Saturday nights in October. Only $5 for spine-chilling fun in our corn maze.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/haunted-maze`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/haunted1.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Haunted Maze | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Experience the thrilling Haunted Maze! Friday & Saturday nights in October. Only $5 for spine-chilling fun.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/haunted1.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/haunted-maze`,
+    },
+  ],
 });
 
 // Gallery images data for haunted maze

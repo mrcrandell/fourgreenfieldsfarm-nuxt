@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for building the maze page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for building the maze page
 useHead({
   title: "Building the Maze",
+  meta: [
+    {
+      name: "description",
+      content:
+        "See how Four Green Fields Farm builds their famous corn maze in Rodney, MI. Learn about maze construction, design process, and the hard work behind creating our annual corn maze.",
+    },
+    {
+      name: "keywords",
+      content:
+        "building corn maze, maze construction, how corn maze is built, Four Green Fields Farm maze building, corn field maze design, Michigan corn maze construction",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Building the Maze | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "See how Four Green Fields Farm builds their famous corn maze. Learn about maze construction, design process, and the work behind our annual corn maze.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/building-the-maze`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/building_a_maze_img_0.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Building the Maze | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "See how Four Green Fields Farm builds their famous corn maze. Learn about maze construction and design process.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/building_a_maze_img_0.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/building-the-maze`,
+    },
+  ],
 });
 
 // Gallery images data for building the maze

@@ -10,9 +10,62 @@ import {
 } from "date-fns";
 
 const route = useRoute();
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
 
 useHead({
   title: "Events",
+  meta: [
+    {
+      name: "description",
+      content:
+        "View upcoming events and group bookings at Four Green Fields Farm in Rodney, MI. Check our calendar for corn maze hours, haunted maze dates, and private group availability.",
+    },
+    {
+      name: "keywords",
+      content:
+        "Four Green Fields Farm events, group bookings, corn maze calendar, haunted maze dates, private groups, farm events, Rodney Michigan events",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Events & Group Bookings | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "View upcoming events and group bookings at Four Green Fields Farm. Check our calendar for corn maze hours, haunted maze dates, and more.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/events`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/events1.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Events & Group Bookings | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "View upcoming events and group bookings at Four Green Fields Farm. Check our calendar for corn maze hours and more.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/events1.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/events`,
+    },
+  ],
 });
 
 // Gallery images for events page

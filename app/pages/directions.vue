@@ -1,7 +1,61 @@
 <script setup>
-// Set custom title for directions page
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+
+// Set custom title and SEO for directions page
 useHead({
   title: "Driving Directions",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Get driving directions to Four Green Fields Farm at 15693 Wilson Road, Rodney, MI. Located 7 miles east of US 131, exit 139, near Big Rapids. Interactive map included.",
+    },
+    {
+      name: "keywords",
+      content:
+        "driving directions, Four Green Fields Farm address, 15693 Wilson Road, Rodney Michigan, Big Rapids directions, US 131 exit 139, farm location",
+    },
+    // Open Graph tags
+    {
+      property: "og:title",
+      content: "Driving Directions | Four Green Fields Farm",
+    },
+    {
+      property: "og:description",
+      content:
+        "Get driving directions to Four Green Fields Farm at 15693 Wilson Road, Rodney, MI. Located 7 miles east of US 131, exit 139.",
+    },
+    {
+      property: "og:url",
+      content: `${siteUrl}/directions`,
+    },
+    {
+      property: "og:image",
+      content: `${siteUrl}/assets/img/photos/enterance-sign-pic.jpg`,
+    },
+    // Twitter Card tags
+    {
+      name: "twitter:title",
+      content: "Driving Directions | Four Green Fields Farm",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Get driving directions to Four Green Fields Farm at 15693 Wilson Road, Rodney, MI.",
+    },
+    {
+      name: "twitter:image",
+      content: `${siteUrl}/assets/img/photos/enterance-sign-pic.jpg`,
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `${siteUrl}/directions`,
+    },
+  ],
 });
 
 const mapContainer = ref(null);
