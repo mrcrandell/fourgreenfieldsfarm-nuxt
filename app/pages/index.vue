@@ -1,8 +1,46 @@
 <script setup>
-// Set custom title for home page without template
+const { public: { siteUrl } } = useRuntimeConfig();
+
+// Set custom title for home page without template and page-specific meta
 useHead({
   title: "Four Green Fields Farm",
   titleTemplate: null, // This disables the global template for this page
+  meta: [
+    // Enhanced description for home page
+    {
+      name: "description",
+      content: "Experience family fun at Four Green Fields Farm in Rodney, MI! Enjoy our famous corn maze, pumpkin patch, haunted maze, and horse-drawn wagon rides. Open September-October with group bookings available."
+    },
+    // Override Open Graph for home page
+    {
+      property: "og:title",
+      content: "Four Green Fields Farm - Corn Maze & Family Fun in Rodney, MI"
+    },
+    {
+      property: "og:description", 
+      content: "Experience family fun at Four Green Fields Farm! Enjoy our famous corn maze, pumpkin patch, haunted maze, and horse-drawn wagon rides. Open September-October."
+    },
+    {
+      property: "og:url",
+      content: siteUrl
+    },
+    // Twitter Card overrides
+    {
+      name: "twitter:title",
+      content: "Four Green Fields Farm - Corn Maze & Family Fun in Rodney, MI"
+    },
+    {
+      name: "twitter:description",
+      content: "Experience family fun at Four Green Fields Farm! Enjoy our famous corn maze, pumpkin patch, haunted maze, and horse-drawn wagon rides."
+    },
+  ],
+  link: [
+    // Page-specific canonical URL
+    {
+      rel: "canonical",
+      href: siteUrl
+    }
+  ]
 });
 
 // Gallery images data
