@@ -13,6 +13,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: {
+        lang: "en", // This sets <html lang="en">
+      },
       title: "Four Green Fields Farm",
       titleTemplate: "%s - Four Green Fields Farm",
       meta: [
@@ -46,14 +49,15 @@ export default defineNuxtConfig({
         },
         {
           property: "og:image",
-          content: "https://www.fourgreenfieldsfarm.com/assets/img/photos/enterance-sign-pic.jpg",
+          content:
+            "https://www.fourgreenfieldsfarm.com/assets/img/photos/enterance-sign-pic.jpg",
         },
         {
           property: "og:image:width",
           content: "1200",
         },
         {
-          property: "og:image:height", 
+          property: "og:image:height",
           content: "630",
         },
         {
@@ -76,7 +80,8 @@ export default defineNuxtConfig({
         },
         {
           name: "keywords",
-          content: "corn maze, pumpkin patch, haunted maze, horse drawn wagon rides, family fun, fall activities, Rodney Michigan, Big Rapids, farm activities",
+          content:
+            "corn maze, pumpkin patch, haunted maze, horse drawn wagon rides, family fun, fall activities, Rodney Michigan, Big Rapids, farm activities",
         },
         // Geographic meta tags
         {
@@ -130,33 +135,34 @@ export default defineNuxtConfig({
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             "name": "Four Green Fields Farm",
-            "description": "Family-friendly corn maze, pumpkin patch, and fall activities in Rodney, Michigan",
+            "description":
+              "Family-friendly corn maze, pumpkin patch, and fall activities in Rodney, Michigan",
             "url": "https://www.fourgreenfieldsfarm.com",
             "telephone": "231-580-1463",
             "email": "fourgreenfieldsman@yahoo.com",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "15693 Wilson Road",
-              "addressLocality": "Rodney", 
+              "addressLocality": "Rodney",
               "addressRegion": "MI",
               "postalCode": "49342",
-              "addressCountry": "US"
+              "addressCountry": "US",
             },
             "geo": {
               "@type": "GeoCoordinates",
               "latitude": "43.7917",
-              "longitude": "-85.4872"
+              "longitude": "-85.4872",
             },
             "openingHours": [
               "Sa 12:00-17:30",
-              "Su 14:00-17:00"
+              "Su 14:00-17:00",
             ],
             "priceRange": "$2-$5",
             "image": [
-              "https://www.fourgreenfieldsfarm.com/assets/img/photos/enterance-sign-pic.jpg"
+              "https://www.fourgreenfieldsfarm.com/assets/img/photos/enterance-sign-pic.jpg",
             ],
             "sameAs": [
-              "https://www.facebook.com/people/Four-Green-Fields-Farm/100067042143292/"
+              "https://www.facebook.com/people/Four-Green-Fields-Farm/100067042143292/",
             ],
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
@@ -166,34 +172,34 @@ export default defineNuxtConfig({
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
-                    "name": "Corn Maze"
+                    "name": "Corn Maze",
                   },
                   "price": "3",
-                  "priceCurrency": "USD"
-                },
-                {
-                  "@type": "Offer", 
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Haunted Maze"
-                  },
-                  "price": "5",
-                  "priceCurrency": "USD"
+                  "priceCurrency": "USD",
                 },
                 {
                   "@type": "Offer",
                   "itemOffered": {
-                    "@type": "Service", 
-                    "name": "Horse Drawn Wagon Rides"
+                    "@type": "Service",
+                    "name": "Haunted Maze",
+                  },
+                  "price": "5",
+                  "priceCurrency": "USD",
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Horse Drawn Wagon Rides",
                   },
                   "price": "2",
-                  "priceCurrency": "USD"
-                }
-              ]
-            }
-          })
-        }
-      ]
+                  "priceCurrency": "USD",
+                },
+              ],
+            },
+          }),
+        },
+      ],
     },
   },
 
@@ -201,15 +207,15 @@ export default defineNuxtConfig({
     routeRules: {
       "/admin": { redirect: "/admin/events" },
       // Add SEO-friendly route rules
-      "/": { 
-        headers: { 
-          "Cache-Control": "s-maxage=60" 
-        } 
+      "/": {
+        headers: {
+          "Cache-Control": "s-maxage=60",
+        },
       },
-      "/events/**": { 
-        headers: { 
-          "Cache-Control": "s-maxage=300" 
-        } 
+      "/events/**": {
+        headers: {
+          "Cache-Control": "s-maxage=300",
+        },
       },
     },
   },
@@ -241,7 +247,8 @@ export default defineNuxtConfig({
         siteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || "",
       },
       // Add site URL for easy access in components
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://www.fourgreenfieldsfarm.com",
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL ||
+        "https://www.fourgreenfieldsfarm.com",
     },
   },
   components: [
