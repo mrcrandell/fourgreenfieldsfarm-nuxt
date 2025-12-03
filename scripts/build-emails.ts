@@ -166,9 +166,9 @@ async function buildEmails() {
       const outPath = path.join(outDir, `${name}.html`);
       await fs.writeFile(outPath, inlined, "utf8");
 
-      console.log(`✅ Built ${name}.html`);
+      console.log(`- Built ${name}.html`);
     } catch (error) {
-      console.error(`❌ Failed to build ${name}:`, error);
+      console.error(`x - Failed to build ${name}:`, error);
     }
   }
 }
