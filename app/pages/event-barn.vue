@@ -363,51 +363,6 @@ const weddingArchImgs = [
     }
   }
 
-  .prices-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto 2rem;
-    background: $white;
-    border-radius: rem(8);
-    overflow: hidden;
-    @include shadow-1();
-
-    th,
-    td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-
-    th {
-      background: $camarone;
-      color: white;
-      font-weight: 600;
-    }
-
-    tbody tr {
-      &:nth-child(even) {
-        background: #f9f9f9;
-      }
-
-      &:hover {
-        background: rgba($camarone, 0.05);
-      }
-
-      td {
-        text-align: right;
-        font-weight: 600;
-        color: var(--primary);
-      }
-    }
-
-    tbody tr:last-child {
-      td {
-        border-bottom: none;
-      }
-    }
-  }
-
   .pricing-details {
     font-size: rem(14);
     color: var(--text-muted);

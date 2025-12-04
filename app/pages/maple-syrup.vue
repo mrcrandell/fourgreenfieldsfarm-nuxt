@@ -214,25 +214,23 @@ const pricingData = [
     </HighlightedSection>
 
     <div class="pricing-section">
-      <h3>Our price list is below.</h3>
-      <div class="table-responsive">
-        <table class="pricing-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Glass Bottle</th>
-              <th>Plastic Container</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in pricingData" :key="item.size">
-              <td>{{ item.size }}</td>
-              <td>{{ item.glass }}</td>
-              <td>{{ item.plastic }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- <h3>Our price list is below.</h3> -->
+      <table class="prices-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Glass Bottle</th>
+            <th>Plastic Container</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in pricingData" :key="item.size">
+            <td>{{ item.size }}</td>
+            <td>{{ item.glass }}</td>
+            <td>{{ item.plastic }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="visitor-info">
@@ -352,48 +350,6 @@ const pricingData = [
 }
 
 .pricing-section {
-  .table-responsive {
-    overflow-x: auto;
-    margin: 1rem 0;
-  }
-
-  .pricing-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: rem(8);
-    overflow: hidden;
-    @include shadow-1();
-
-    th,
-    td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-
-    th {
-      background: $camarone;
-      color: white;
-      font-weight: 600;
-    }
-
-    tbody tr {
-      &:nth-child(even) {
-        background: #f9f9f9;
-      }
-
-      &:hover {
-        background: rgba($camarone, 0.05);
-      }
-    }
-
-    tbody tr:last-child {
-      td {
-        border-bottom: none;
-      }
-    }
-  }
 }
 
 .visitor-info {
