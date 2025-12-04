@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
     let html = juice(mustache.render(contactTemplate, emailData));
     let data = {
       from: "postmaster@mailgun.fourgreenfieldsfarm.com", // Update with actual domain
-      to: "me@mattcrandell.com", // Update with farm's email
+      to: "fourgreenfieldsman@yahoo.com",
       "h:Reply-To": emailData.email,
       subject: `Contact Form: ${emailData.name}`,
       html,
