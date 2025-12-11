@@ -1,6 +1,9 @@
 <template>
   <header class="header">
-    <img src="https://www.fourgreenfieldsfarm.com/img/four-green-fields-farm-logo-email.jpg" alt="Four Green Fields Farm" />
+    <img
+      src="https://www.fourgreenfieldsfarm.com/assets/img/four-green-fields-farm-logo-email.jpg"
+      alt="Four Green Fields Farm"
+    />
   </header>
 </template>
 
