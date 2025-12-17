@@ -13,8 +13,8 @@ model Event {
   id              String   @id @default(uuid())
   name            String
   slug            String
-  startsAt        DateTime @db.Timestamptz()
-  endsAt          DateTime @db.Timestamptz()
+  startsAt        DateTime @db.Timestamp()
+  endsAt          DateTime @db.Timestamp()
   description     String?  @db.Text
   isFeatured      Boolean  @default(false)
   isHasEndsAt     Boolean  @default(false)

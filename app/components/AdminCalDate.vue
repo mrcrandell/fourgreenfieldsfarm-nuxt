@@ -29,8 +29,10 @@ const isToday = computed(() => {
         <span
           >{{
             format(
-              event.startsAt,
-              new Date(event.startsAt).getMinutes() === 0 ? "haaa" : "h:mmaaa"
+              new Date(event.startsAt.replace("Z", "")),
+              new Date(event.startsAt.replace("Z", "")).getMinutes() === 0
+                ? "haaa"
+                : "h:mmaaa"
             )
           }}
           <strong>{{ event.name }}</strong></span

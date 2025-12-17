@@ -77,8 +77,10 @@ async function loadEvent() {
   try {
     isLoading.value = true;
     const event = await $fetch(`/api/events/${eventId.value}`);
-    const startDate = new Date(event.startsAt);
-    const endDate = new Date(event.endsAt);
+
+    // Treat timestamps as farm local time by removing 'Z' suffix
+    const startsAtLocal = event.startsAt.replace("Z", "");
+    const endsAtLocal = event.endsAt.replace("Z", "");
 
     formData.value = {
       name: event.name,
@@ -90,11 +92,11 @@ async function loadEvent() {
       isHasEndsAt: event.isHasEndsAt,
       isFeatured: event.isFeatured,
       recurrenceRule: event.recurrenceRule || "",
-      startsAt: format(startDate, "yyyy-MM-dd'T'HH:mm"),
-      endsAt: format(endDate, "yyyy-MM-dd'T'HH:mm"),
-      startDate: format(startDate, "yyyy-MM-dd"),
-      startTime: format(startDate, "HH:mm"),
-      endTime: format(endDate, "HH:mm"),
+      startsAt: startsAtLocal,
+      endsAt: endsAtLocal,
+      startDate: startsAtLocal.split("T")[0],
+      startTime: startsAtLocal.split("T")[1].substring(0, 5),
+      endTime: endsAtLocal.split("T")[1].substring(0, 5),
       isRecurring: !!event.recurrenceRule,
       recurringFrequency: "WEEKLY",
       recurringInterval: 1,

@@ -257,9 +257,9 @@ function closeEventModal() {
 function formatEventTime(event) {
   if (event.isAllDay) return "All Day";
 
-  const start = format(new Date(event.startsAt), "h:mm a");
+  const start = format(new Date(event.startsAt.replace("Z", "")), "h:mm a");
   if (event.endsAt) {
-    const end = format(new Date(event.endsAt), "h:mm a");
+    const end = format(new Date(event.endsAt.replace("Z", "")), "h:mm a");
     return `${start} - ${end}`;
   }
   return start;

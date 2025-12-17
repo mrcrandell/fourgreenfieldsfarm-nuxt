@@ -84,8 +84,8 @@ function handleDayClick() {
           >{{
             !event.isAllDay
               ? format(
-                  event.startsAt,
-                  new Date(event.startsAt).getMinutes() === 0
+                  new Date(event.startsAt.replace("Z", "")),
+                  new Date(event.startsAt.replace("Z", "")).getMinutes() === 0
                     ? "haaa"
                     : "h:mmaaa"
                 )

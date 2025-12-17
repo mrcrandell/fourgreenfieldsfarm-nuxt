@@ -117,7 +117,7 @@ function changePage(page) {
 
 // Format date for display
 function formatDate(date) {
-  return format(new Date(date), "MMM d, yyyy h:mm a");
+  return format(new Date(date.replace("Z", "")), "MMM d, yyyy h:mm a");
 }
 
 function deleteEvent(event) {
@@ -283,7 +283,10 @@ onMounted(() => {
               <td>
                 {{
                   event.isAllDay
-                    ? format(new Date(event.startsAt), "MMM d, yyyy")
+                    ? format(
+                        new Date(event.startsAt.replace("Z", "")),
+                        "MMM d, yyyy"
+                      )
                     : formatDate(event.startsAt)
                 }}
               </td>
