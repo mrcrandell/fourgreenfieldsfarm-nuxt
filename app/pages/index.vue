@@ -117,7 +117,7 @@ const galleryImgs = [
     <div class="hours-prices">
       <div>
         <h3>Corn Maze</h3>
-        <p>Sunday, September 28 to October 29</p>
+        <p>Sunday, September 27 to November 1</p>
         <h4>Hours</h4>
         <table class="table">
           <tbody>
@@ -151,7 +151,7 @@ const galleryImgs = [
       </div>
       <div>
         <h3>Haunted Maze</h3>
-        <p>October 10 to October 25</p>
+        <p>October 9 to October 31</p>
         <h4>Hours</h4>
         <table class="table">
           <tbody>
