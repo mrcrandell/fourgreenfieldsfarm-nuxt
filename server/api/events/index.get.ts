@@ -1,4 +1,4 @@
-import { parseISO } from "date-fns";
+import { endOfDay, parseISO, startOfDay } from "date-fns";
 // import prisma from "../../../lib/prisma";
 
 export default defineEventHandler(async (event) => {
@@ -33,14 +33,14 @@ export default defineEventHandler(async (event) => {
     }
 
     // Handle date filtering
-    if (query.startsAt) {
+    if (query.startsAt || query.endsAt) {
       queryOptions.where.startsAt = {
-        gte: parseISO(query.startsAt as string),
-      };
-    }
-    if (query.endsAt) {
-      queryOptions.where.endsAt = {
-        lte: parseISO(query.endsAt as string),
+        ...(query.startsAt
+          ? { gte: startOfDay(parseISO(query.startsAt as string)) }
+          : queryOptions.where.startsAt),
+        ...(query.endsAt
+          ? { lte: endOfDay(parseISO(query.endsAt as string)) }
+          : {}),
       };
     }
 
