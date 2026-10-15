@@ -117,7 +117,7 @@ const galleryImgs = [
     <div class="hours-prices">
       <div>
         <h3>Corn Maze</h3>
-        <p>Sunday, September 27 to November 1</p>
+        <p>Sunday, September 27 to October 31</p>
         <h4>Hours</h4>
         <table class="table">
           <tbody>
